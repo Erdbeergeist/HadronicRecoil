@@ -17,7 +17,7 @@ class makeHists{
 			hadrec_mapHist2D["U_par+ptZ 2"] = new TH2F("Upar + ptZ 2","",100,0,100,100,-100,100);
 			hadrec_mapHist2D["U_par+ptZ _ ptZ 2"] = new TH2F("Upar + ptZ _ ptZ 2","",100,0,100,100,-100,100);
 			hadrec_mapHist2D["resc U_par+ptZ _ ptZ 2"] = new TH2F("resc Upar + ptZ _ ptZ 2","",100,0,100,100,-100,100);
-
+			hadrec_mapHist2D["resc U_par+ptZ 2"] = new TH2F("resc Upar + ptZ 2","",100,0,100,100,-100,100);
 
 		}
 		///Fill the Historgrams
@@ -30,7 +30,7 @@ class makeHists{
 			hadrec_mapHist1D["U_par+ptZ"]->Fill(HadronicRecoil.Pt()/1000 * cos(dphi)-Zvec.Pt()/1000);
 			pair <double, double> data (Zvec.Pt()/1000,HadronicRecoil.Pt()/1000 * cos(dphi));
 			rdata.push_back(data);
-			Zpt.push_back(Zvec.Pt()/1000);
+			NVert.push_back(NumberOfVertices);
 			}
 		
 		///Fill 2D Historgrams
@@ -43,7 +43,7 @@ class makeHists{
 		void Fill2DHistsresc() {
 			int h=0;
 			getscalefac();
-			for (int i=0;i<Zpt.size();i++){
+			for (int i=0;i<NVert.size();i++){
 				for (int j=0;j<scalefac.size();j++){///find the right scaling factor for ZPT
 					if (rdata[i].first<=(j+1)*xbwidth) {
 						h=j;
@@ -51,6 +51,7 @@ class makeHists{
 					}
 				}
 				hadrec_mapHist2D["resc U_par+ptZ _ ptZ 2"]->Fill(rdata[i].first,scalefac[h]*(rdata[i].second) - rdata[i].first);
+				hadrec_mapHist2D["resc U_par+ptZ 2"]->Fill(NVert[i],scalefac[h]*(rdata[i].second) - rdata[i].first);
 			}
 		}
 		
@@ -107,10 +108,45 @@ class makeHists{
 		
 		}
 				
+		///Make bias and mean Plots
+		void resHists(int method =0,string histname="U_par+ptZ _ ptZ 2",char const *name ="Resolution vs ptZ") {
+			
+			if (method == 0){
+				int nx,ny;
+				double cutter=0;///Minimum amount of content in Bins necessary in Bins for the Program to actually do the Fit
+				
+				nx = hadrec_mapHist2D[histname]->GetXaxis()->GetNbins();
+				ny = hadrec_mapHist2D[histname]->GetYaxis()->GetNbins();
+				
+				///Create a Histogram for the resolution sigma against the NumberOfVertices
+				TF1 *ygaus = new TF1("ygaus","gaus");
+				TH1F *temp = new TH1F("tmp","tmp",ny,hadrec_mapHist2D[histname]->GetXaxis()->GetXmin(),hadrec_mapHist2D[histname]->GetXaxis()->GetXmax());
+				TH1F *res = new TH1F(name,name,ny,hadrec_mapHist2D[histname]->GetXaxis()->GetXmin(),hadrec_mapHist2D[histname]->GetXaxis()->GetXmax());
+				///For each silce of hist create a temporary Historgram and Fit it with a gaussian
+				///Sigma is then used to create the Resolution Histogram
+				for (int x=1;x<=nx;x++){
+					for (int y=1;y<=ny;y++){
+						temp->SetBinContent(y,hadrec_mapHist2D[histname]->GetBinContent(x,y));
+						cutter+=hadrec_mapHist2D[histname]->GetBinContent(x,y);
+					}
+					if (abs(cutter)>0){ ///dont try to fit empty Histograms
+						temp->Fit(ygaus,"Q");
+						double mean = ygaus->GetParameter(2);
+						res->SetBinContent(x, mean);///Set the bins of the new Histogram
+						res->SetBinError(x, ygaus->GetParError(2));
+												
+					}	
+				cutter =0;
+				}
+				delete(temp);
+			}
+
+		}
 		void WriteFile(TFile *fileO){
 			fileO->Write();
 			fileO->Close();
 		}
+
 	private:
 		map<string, TH1*>		hadrec_mapHist1D;
 		map<string, TH2*>		hadrec_mapHist2D;
@@ -118,8 +154,9 @@ class makeHists{
 		double xbwidth;
 		pair <int,int> nxny;
 		vector<double> UparptZ;
-		vector<double> Zpt,Zptm;
+		vector<double> Zptm;
 		vector<double> scalefac;
+		vector<int> NVert;
 		
 		void getscalefac(){
 			int nx,ny;
