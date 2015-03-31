@@ -1,13 +1,11 @@
 /// Hardronic Recoil Computation using a pre prepared ROOT file by Stephan Tilch
 /// Lukas Mittnacht March 2015
-///
+
 #include <stdlib.h> 
 #include "./EWCommonIncludes.h"
 #include <cmath>
-#include <future>
-//#include <chrono>
 
-
+using namespace std;
 using namespace std;
 using std::vector;
 //using namespace std::chrono;
