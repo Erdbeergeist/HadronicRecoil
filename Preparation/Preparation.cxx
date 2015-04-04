@@ -1,6 +1,6 @@
 #include "./EWCommonIncludes.h"
 #include "./EWQuickEvent.h"
-#include "./Functions.h"
+#include "./Preparation_Functions.h"
 
 /// Global Variables
 EWQuickEvent 							*m_event;
@@ -18,7 +18,21 @@ int main(int argc, char *argv[]) {
 	
 	TFile *file0 = new TFile(output_filename, "RECREATE");
 	
-
+	std::vector<double> prim_track_pt;
+	std::vector<double> prim_track_eta;
+	std::vector<double> prim_track_phi;
+	std::vector<double> pile_track_pt;
+	std::vector<double> pile_track_eta;
+	std::vector<double> pile_track_phi;
+	/*std::vector<double> track_z0;
+	std::vector<double> track_d0;
+	std::vector<int> track_nPIX;
+	std::vector<int> track_nSCT;
+	std::vector<int> track_nTRT;
+	std::vector<double> track_theta_wrtPV;
+	std::vector<double> track_eta_atCalo2ndLayer;
+	std::vector<double> track_phi_atCalo2ndLayer;
+	std::vector<double> track_qoverp_wrtPV;*/
 	std::vector<double> vecCellsPt; 
 	std::vector<double> vecCellsEta;
 	std::vector<double> vecCellsPhi;
@@ -59,8 +73,22 @@ int main(int argc, char *argv[]) {
 	MCCtree->Branch("NumberOfVertices", &NumberOfVertices); //NumberOfVertices
 	MCCtree->Branch("jet_pt", &jet_pt); //jet_pt
 	MCCtree->Branch("jet_eta", &jet_eta); //jet_eta
-	MCCtree->Branch("jet_phi", &jet_phi); //jet_phi
-	
+	MCCtree->Branch("jet_phi", &jet_phi); //jet_phi0
+	MCCtree->Branch("prim_track_pt",&prim_track_pt);
+	MCCtree->Branch("prim_track_eta",&prim_track_eta);
+	MCCtree->Branch("prim_track_phi",&prim_track_phi);
+	MCCtree->Branch("pile_track_pt",&pile_track_pt);
+	MCCtree->Branch("pile_track_eta",&pile_track_eta);
+	MCCtree->Branch("pile_track_phi",&pile_track_phi);
+	/*MCCtree->Branch("track_z0",&track_z0);
+	MCCtree->Branch("track_d0",&track_d0);
+	MCCtree->Branch("track_nPIXHits",&track_nPIX);
+	MCCtree->Branch("track_SCTHits",&track_nSCT);
+	MCCtree->Branch("track_TRTHits", &track_nTRT);
+	MCCtree->Branch("track_theta_wrtPV",&track_theta_wrtPV);
+	MCCtree->Branch("track_eta_atCalo2ndLayer",&track_eta_atCalo2ndLayer);
+	MCCtree->Branch("track_phi_atCalo2ndLayer",&track_phi_atCalo2ndLayer);
+	MCCtree->Branch("track_qoverp_wrtPV",&track_qoverp_wrtPV);*/
 	std::vector<std::string> vec_Filenames;
 	vec_Filenames.push_back(filename.c_str());
 
@@ -68,7 +96,7 @@ int main(int argc, char *argv[]) {
 
 
 	/// Loop over all Events
-	m_event->m_actEventNumber = 3000; //#LM y 3000 ?
+	//m_event->m_actEventNumber = 3000; //#LM y 3000 ?
 	while (m_event->getNextEvent()) {
 		
 		// One vector per event with all information
@@ -78,7 +106,7 @@ int main(int argc, char *argv[]) {
 		
 
 		// Store vector in five Branches of MCCtree
-		StoreInTree(m_event, vecCaloCells, vecCellsPt, vecCellsEta, vecCellsPhi, SumPtPVvec, countPVvec, SumPtSVvec, countSVvec, Event_Nr, Run_Nr, averageNumberOfInteractions, mu_pt, mu_eta, mu_phi, mu_IsolationParam_ptcone20, mu_charge, NumberOfVertices, jet_pt, jet_eta, jet_phi, MCCtree);
+		StoreInTree(m_event, vecCaloCells, vecCellsPt, vecCellsEta, vecCellsPhi, SumPtPVvec, countPVvec, SumPtSVvec, countSVvec, Event_Nr, Run_Nr, averageNumberOfInteractions, mu_pt, mu_eta, mu_phi, mu_IsolationParam_ptcone20, mu_charge, NumberOfVertices, jet_pt, jet_eta, jet_phi, MCCtree,prim_track_pt,prim_track_eta,prim_track_phi,pile_track_pt,pile_track_eta,pile_track_phi);
 		
 				
 	}
