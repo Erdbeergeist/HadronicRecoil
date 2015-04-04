@@ -24,15 +24,6 @@ int main(int argc, char *argv[]) {
 	std::vector<double> pile_track_pt;
 	std::vector<double> pile_track_eta;
 	std::vector<double> pile_track_phi;
-	/*std::vector<double> track_z0;
-	std::vector<double> track_d0;
-	std::vector<int> track_nPIX;
-	std::vector<int> track_nSCT;
-	std::vector<int> track_nTRT;
-	std::vector<double> track_theta_wrtPV;
-	std::vector<double> track_eta_atCalo2ndLayer;
-	std::vector<double> track_phi_atCalo2ndLayer;
-	std::vector<double> track_qoverp_wrtPV;*/
 	std::vector<double> vecCellsPt; 
 	std::vector<double> vecCellsEta;
 	std::vector<double> vecCellsPhi;
@@ -80,15 +71,7 @@ int main(int argc, char *argv[]) {
 	MCCtree->Branch("pile_track_pt",&pile_track_pt);
 	MCCtree->Branch("pile_track_eta",&pile_track_eta);
 	MCCtree->Branch("pile_track_phi",&pile_track_phi);
-	/*MCCtree->Branch("track_z0",&track_z0);
-	MCCtree->Branch("track_d0",&track_d0);
-	MCCtree->Branch("track_nPIXHits",&track_nPIX);
-	MCCtree->Branch("track_SCTHits",&track_nSCT);
-	MCCtree->Branch("track_TRTHits", &track_nTRT);
-	MCCtree->Branch("track_theta_wrtPV",&track_theta_wrtPV);
-	MCCtree->Branch("track_eta_atCalo2ndLayer",&track_eta_atCalo2ndLayer);
-	MCCtree->Branch("track_phi_atCalo2ndLayer",&track_phi_atCalo2ndLayer);
-	MCCtree->Branch("track_qoverp_wrtPV",&track_qoverp_wrtPV);*/
+	
 	std::vector<std::string> vec_Filenames;
 	vec_Filenames.push_back(filename.c_str());
 
