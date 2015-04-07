@@ -47,6 +47,7 @@ class makeHists{
 				for (int j=0;j<scalefac.size();j++){///find the right scaling factor for ZPT
 					if (rdata[i].first<=(j+1)*xbwidth) {
 						h=j;
+						cout<<Zptm[h]<<"\t"<<rdata[i].first<<endl;
 						break;
 					}
 				}
@@ -166,23 +167,22 @@ class makeHists{
 			nxny.first=nx;
 			nxny.second=ny;
 			xbwidth=(hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetXaxis()->GetXmax()/hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetXaxis()->GetNbins());
-			///Create a Histogram for the resolution sigma against the NumberOfVertices
 			TF1 *ygaus = new TF1("ygaus","gaus");
 			//TH1F *temp = new TH1F("tmp","tmp",ny,hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetXaxis()->GetXmin(),hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetXaxis()->GetXmax());
-			
+			double help=0;
 			///For each silce of hist create a temporary Historgram and Fit it with a gaussian
 			for (int x=1;x<=nx;x++){
-				/*for (int y=1;y<=ny;y++){
-					temp->SetBinContent(y,hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetBinContent(x,y));
-					
+				for (int y=1;y<=ny;y++){
+					//temp->SetBinContent(y,hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetBinContent(x,y));
+					help+=hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetBinContent(x,y);
 				}
-				temp->Fit(ygaus,"Q");
-				double mean = ygaus->GetParameter(1);*/
+				//temp->Fit(ygaus,"Q");
+				//double mean = ygaus->GetParameter(1);
 				double mean = hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->ProjectionY("",x,x)->GetMean();
-				UparptZ.push_back(mean);
+				UparptZ.push_back(help/ny);
 				Zptm.push_back(x*xbwidth-xbwidth/2);
-				scalefac.push_back(1/((UparptZ[x-1]/Zptm[x-1])-1));	
-				
+				scalefac.push_back(1/((UparptZ[x-1]/Zptm[x-1])+1));	
+				cout<<help/ny<<"\t"<<mean<<endl;
 										
 			
 			}
