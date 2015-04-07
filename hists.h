@@ -47,7 +47,7 @@ class makeHists{
 				for (int j=0;j<scalefac.size();j++){///find the right scaling factor for ZPT
 					if (rdata[i].first<=(j+1)*xbwidth) {
 						h=j;
-						cout<<Zptm[h]<<"\t"<<rdata[i].first<<endl;
+						//cout<<Zptm[h]<<"\t"<<rdata[i].first<<endl;
 						break;
 					}
 				}
@@ -179,10 +179,11 @@ class makeHists{
 				//temp->Fit(ygaus,"Q");
 				//double mean = ygaus->GetParameter(1);
 				double mean = hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->ProjectionY("",x,x)->GetMean();
-				UparptZ.push_back(help/ny);
+				UparptZ.push_back(mean);
+				//cout<<mean<<endl;
 				Zptm.push_back(x*xbwidth-xbwidth/2);
 				scalefac.push_back(1/((UparptZ[x-1]/Zptm[x-1])+1));	
-				cout<<help/ny<<"\t"<<mean<<endl;
+				//cout<<help/ny<<"\t"<<mean<<endl;
 										
 			
 			}
