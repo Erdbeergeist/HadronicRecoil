@@ -5,6 +5,7 @@
 #BSUB -q atlaslong
 #BSUB -app Reserve3G
 #BSUB -n 3
+#BSUB -J Preparation
 
 source /cluster/cern/root_v5.34.03_x86_64/bin/thisroot.sh
 
