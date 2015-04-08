@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "#!/bin/bash
+#BSUB -L /bin/bash
+#BSUB -o /home/lmittnac/HadronicRecoil/Preparation/outputshort/out.out
+#BSUB -e /home/lmittnac/HadronicRecoil/Preparation/outputshort/errout.out
+#BSUB -q atlasshort
+#BSUB -app Reserve3G
+#BSUB -n 3
+
+source /cluster/cern/root_v5.34.03_x86_64/bin/thisroot.sh
+
+make
+/home/lmittnac/HadronicRecoil/Preparation/Preparation /etapfs05/atlashpc/lintai/LocalData/NTUP_COMMON/data12_8TeV.00206299.physics_Muons.merge.NTUP_COMMON.r4065_p1278_p1562_tid01316275_00/NTUP_COMMON.01316275._000003.root.2 /home/lmittnac/HadronicRecoil/Preparation/outputshort/NTUP_COMMON.01316275._000003.root" > file.sh
+
+
+echo "lala" > file.sh
