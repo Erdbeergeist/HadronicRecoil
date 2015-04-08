@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 	}	
 	cout<<argv[1]<<endl;
 	///Declare useful variables and assgin standard values
-	int totalEvents=0,totalZ=0,ZMmin=1,ZMmax=116;
+	int totalEvents=0,totalZ=0,ZMmin=50,ZMmax=116;
 	bool isZ=false;
 	
 	///If given values set ZMmin and ZMmax
