@@ -2,7 +2,7 @@
 #BSUB -L /bin/bash
 #BSUB -o /home/lmittnac/HadronicRecoil/Preparation/output/out33.out
 #BSUB -e /home/lmittnac/HadronicRecoil/Preparation/output/errout33.out
-#BSUB -q atlasshort
+#BSUB -q atlaslong
 #BSUB -app Reserve3G
 #BSUB -n 3
 #BSUB -J prep33

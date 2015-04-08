@@ -2,7 +2,7 @@
 #BSUB -L /bin/bash
 #BSUB -o /home/lmittnac/HadronicRecoil/Preparation/output/out44.out
 #BSUB -e /home/lmittnac/HadronicRecoil/Preparation/output/errout44.out
-#BSUB -q atlasshort
+#BSUB -q atlaslong
 #BSUB -app Reserve3G
 #BSUB -n 3
 #BSUB -J prep44
