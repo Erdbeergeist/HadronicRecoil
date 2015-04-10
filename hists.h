@@ -68,7 +68,7 @@ class makeHists{
 				
 				///Create a Histogram for the resolution sigma against the NumberOfVertices
 				TF1 *ygaus = new TF1("ygaus","gaus");
-				TH1F *temp = new TH1F("tmp","tmp",ny,hadrec_mapHist2D[histname]->GetXaxis()->GetXmin(),hadrec_mapHist2D[histname]->GetXaxis()->GetXmax());
+				TH1F *temp = new TH1F("tmp","tmp",ny,hadrec_mapHist2D[histname]->GetYaxis()->GetXmin(),hadrec_mapHist2D[histname]->GetYaxis()->GetXmax());
 				TH1F *res = new TH1F(name,name,ny,hadrec_mapHist2D[histname]->GetXaxis()->GetXmin(),hadrec_mapHist2D[histname]->GetXaxis()->GetXmax());
 				///For each silce of hist create a temporary Historgram and Fit it with a gaussian
 				///Sigma is then used to create the Resolution Histogram
@@ -77,9 +77,10 @@ class makeHists{
 						temp->SetBinContent(y,hadrec_mapHist2D[histname]->GetBinContent(x,y));
 						cutter+=hadrec_mapHist2D[histname]->GetBinContent(x,y);
 					}
-					if (abs(cutter)>0){ ///dont try to fit empty Histograms
+					if (abs(cutter)>40){ ///dont try to fit empty Histograms
 						temp->Fit(ygaus,"Q");
 						double mean = ygaus->GetParameter(1);
+						cout<<mean<<endl;
 						res->SetBinContent(x, mean);///Set the bins of the new Histogram
 						res->SetBinError(x, ygaus->GetParError(1));
 												
@@ -96,20 +97,8 @@ class makeHists{
 				
 		}
 		
-		void tryit(){
-			int ny = hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetYaxis()->GetNbins();
-			TH1F *temp = new TH1F("tmp","tmp",ny,hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetXaxis()->GetXmin(),hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetXaxis()->GetXmax());
-			TH1D *tempP = new TH1D("tmpP","tmpP",ny,hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetXaxis()->GetXmin(),hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetXaxis()->GetXmax());
-
-			
-			for (int y =0;y<ny;y++) {
-				temp->SetBinContent(y,hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->GetBinContent(1,y));
-			}
-			tempP = hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->ProjectionY("",1,1);
-		
-		}
-				
-		///Make bias and mean Plots
+						
+	
 		void resHists(int method =0,string histname="U_par+ptZ _ ptZ 2",char const *name ="Resolution vs ptZ") {
 			
 			if (method == 0){
@@ -121,7 +110,7 @@ class makeHists{
 				
 				///Create a Histogram for the resolution sigma against the NumberOfVertices
 				TF1 *ygaus = new TF1("ygaus","gaus");
-				TH1F *temp = new TH1F("tmp","tmp",ny,hadrec_mapHist2D[histname]->GetXaxis()->GetXmin(),hadrec_mapHist2D[histname]->GetXaxis()->GetXmax());
+				TH1F *temp = new TH1F("tmp","tmp",ny,hadrec_mapHist2D[histname]->GetYaxis()->GetXmin(),hadrec_mapHist2D[histname]->GetYaxis()->GetXmax());
 				TH1F *res = new TH1F(name,name,ny,hadrec_mapHist2D[histname]->GetXaxis()->GetXmin(),hadrec_mapHist2D[histname]->GetXaxis()->GetXmax());
 				///For each silce of hist create a temporary Historgram and Fit it with a gaussian
 				///Sigma is then used to create the Resolution Histogram
@@ -130,10 +119,10 @@ class makeHists{
 						temp->SetBinContent(y,hadrec_mapHist2D[histname]->GetBinContent(x,y));
 						cutter+=hadrec_mapHist2D[histname]->GetBinContent(x,y);
 					}
-					if (abs(cutter)>0){ ///dont try to fit empty Histograms
+					if (abs(cutter)>40){ ///dont try to fit empty Histograms
 						temp->Fit(ygaus,"Q");
-						double mean = ygaus->GetParameter(2);
-						res->SetBinContent(x, mean);///Set the bins of the new Histogram
+						double sigma = ygaus->GetParameter(2);
+						res->SetBinContent(x, sigma);///Set the bins of the new Histogram
 						res->SetBinError(x, ygaus->GetParError(2));
 												
 					}	
