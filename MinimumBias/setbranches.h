@@ -19,6 +19,13 @@
 	std::vector<double>*   		jet_pt = 0;
 	std::vector<double>*   		jet_eta = 0;
 	std::vector<double>*		jet_phi = 0;
+	std::vector<double>* 		prim_track_pt=0;
+	std::vector<double>* 		prim_track_eta=0;
+	std::vector<double>* 		prim_track_phi=0;
+	std::vector<double>* 		pile_track_pt=0;
+	std::vector<double>* 		pile_track_eta=0;
+	std::vector<double>* 		pile_track_phi=0;
+
 	void setbranches(TTree *tree){
 	tree->SetBranchAddress("Mainz_CellPt", &vecCellsPt); //vec.Pt()
 	tree->SetBranchAddress("Mainz_CellEta", &vecCellsEta); //vec.Eta()
@@ -39,6 +46,12 @@
 	tree->SetBranchAddress("jet_pt", &jet_pt); //jet_pt
 	tree->SetBranchAddress("jet_eta", &jet_eta); //jet_eta
 	tree->SetBranchAddress("jet_phi", &jet_phi); //jet_phi
+	tree->SetBranchAddress("prim_track_pt", &prim_track_pt);
+	tree->SetBranchAddress("prim_track_eta",&prim_track_eta);
+	tree->SetBranchAddress("prim_track_phi",&prim_track_phi);
+	tree->SetBranchAddress("pile_track_pt",&pile_track_pt);
+	tree->SetBranchAddress("pile_track_eta",&pile_track_eta);
+	tree->SetBranchAddress("pile_track_phi",&pile_track_phi);
 	/// --- END ---
 	
 }	
