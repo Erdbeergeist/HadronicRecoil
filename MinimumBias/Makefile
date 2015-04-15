@@ -6,7 +6,7 @@ LD=g++
 CXX=g++
 
 INCLUDEFLAGS = -I./ 
-CXXFLAGS = -std=c++11
+CXXFLAGS = 
 LD_FLAGS = -lmycode
 
 ROOTLIBS = `root-config --libs` -lFoam -lMinuit -lTreePlayer
