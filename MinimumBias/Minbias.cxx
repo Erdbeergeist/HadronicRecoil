@@ -8,7 +8,7 @@ using namespace std;
 using std::vector;
 
 #include "./setbranches.h"
-#include "./hadrec_functions.h"
+#include "./Minbias_functions.h"
 #include "./minhists.h"
 
 int main(int argc, char *argv[]) {
@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
 	///Declare neccessary Variables
 	int totalEvents,ZMmin=0,ZMmax=1000000,totalZ=0;
 	bool isZ = false;
+	
 	
 	string infile = argv[1]; ///Declare I/O Files
 	const char* outfile = argv[2];
@@ -72,13 +73,14 @@ int main(int argc, char *argv[]) {
 			if (isZ == true) {
 				///Initialize the Vectors and assign the values
 				TVector3 mu1,mu2,Zvec;
+				double sumpt;
 				mu1.SetPtEtaPhi(mu_pt->at(0),mu_eta->at(0),mu_phi->at(0));
 				mu2.SetPtEtaPhi(mu_pt->at(1),mu_eta->at(1),mu_phi->at(1));
 				Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
 				///Incerase totalZ, calculate the HadronicRecoil and fill the Histograms
 				//totalZ++;
-				
-				hist.FillHists(NumberOfVertices,averageNumberOfInteractions,Zvec,cond);
+				sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
+				hist.FillHists(NumberOfVertices,averageNumberOfInteractions,Zvec,sumpt/1000,cond);
 				isZ = false;
 			}
 		}
