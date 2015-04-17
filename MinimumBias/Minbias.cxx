@@ -19,16 +19,20 @@ int main(int argc, char *argv[]) {
 	///Declare neccessary Variables
 	int totalEvents,ZMmin=0,ZMmax=1000000,totalZ=0;
 	bool isZ = false;
+	bool Zfilt = true;
 	
-	
+		
 	string infile = argv[1]; ///Declare I/O Files
 	const char* outfile = argv[2];
+	string arg3 = argv[3];
 	
-	///If given values set ZMmin and ZMmax
+	///check for Z ?
 	if (argc == 4){
-		ZMmin = atoi(argv[3]);
-		ZMmax = atoi(argv[4]);
-		cout<<"ZMmin set to: " <<ZMmin<<"\t ZMmax set to: "<<ZMmax<<" \n";
+		
+		if (arg3 == "0"){ 
+			
+			Zfilt = false;
+		}
 	}	
 			
 	TFile *fileI = new TFile(infile.c_str(),"READ"); /// Open Input ROOT File
@@ -53,37 +57,54 @@ int main(int argc, char *argv[]) {
 	for (int i=0;i<totalEvents;i++)	{
 		
 		tree->GetEntry(i);
-		for (int cond=0;cond<4;cond++){
-			TLorentzVector recoZ;
-			switch (cond) {
-				case 0:
-					isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax);
-					break;
-				case 1:
-					isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,20,ZMmax);
-					break;
-				case 2:
-					isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,5);
-					break;
-				case 3:
-					isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,2);
-					break;
-			}		
-		
-			if (isZ == true) {
-				///Initialize the Vectors and assign the values
-				TVector3 mu1,mu2,Zvec;
-				double sumpt;
-				mu1.SetPtEtaPhi(mu_pt->at(0),mu_eta->at(0),mu_phi->at(0));
-				mu2.SetPtEtaPhi(mu_pt->at(1),mu_eta->at(1),mu_phi->at(1));
-				Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
-				///Incerase totalZ, calculate the HadronicRecoil and fill the Histograms
-				//totalZ++;
-				sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
-				hist.FillHists(NumberOfVertices,averageNumberOfInteractions,Zvec,sumpt/1000,cond);
-				isZ = false;
+		if (Zfilt == true){
+			for (int cond=0;cond<4;cond++){
+				TLorentzVector recoZ;
+			
+				switch (cond) {
+					case 0:
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax);
+						break;
+					case 1:
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,20,ZMmax);
+						break;
+					case 2:
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,5);
+						break;
+					case 3:
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,2);
+						break;
+				}		
+			
+				if (isZ == true) {
+					///Initialize the Vectors and assign the values
+					TVector3 mu1,mu2,Zvec;
+					vector<double> sumpt;
+					mu1.SetPtEtaPhi(mu_pt->at(0),mu_eta->at(0),mu_phi->at(0));
+					mu2.SetPtEtaPhi(mu_pt->at(1),mu_eta->at(1),mu_phi->at(1));
+					Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
+					///Incerase totalZ, calculate the HadronicRecoil and fill the Histograms
+					//totalZ++;
+					sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
+					hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,cond);
+					isZ = false;
+				}
 			}
+			
 		}
+		else if (Zfilt == false) {
+			
+			//TLorentzVector recoZ;
+				//TVector3 mu1,mu2,Zvec;
+					vector<double> sumpt;
+					//mu1.SetPtEtaPhi(mu_pt->at(0),mu_eta->at(0),mu_phi->at(0));
+					//mu2.SetPtEtaPhi(mu_pt->at(1),mu_eta->at(1),mu_phi->at(1));
+					//Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
+					///Incerase totalZ, calculate the HadronicRecoil and fill the Histograms
+					//totalZ++;
+					sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
+					hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,0);
+			}	
 	}
 	//cout<<"A total of: "<<totalZ<<" Z Events have been found\n";
 	hist.WriteFile(fileO);
