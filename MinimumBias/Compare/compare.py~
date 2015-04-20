@@ -1,0 +1,11 @@
+import sys
+sys.path.append('/home/lukas/root5.34/lib')
+from ROOT import TCanvas, gRandom, TF1, TLegend
+
+compfolder = "/home/lukas/Bachelorarbeit/HadRec/MinimumBias/tryout"
+minbiasfile = ""
+zmumufile = ""
+outfolder = "/home/lukas/Bachelorarbeit/HadRec/MinimumBias/Compare/output"
+
+
+
