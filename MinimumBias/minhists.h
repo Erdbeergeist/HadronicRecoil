@@ -33,6 +33,15 @@ class Hists{
 			minb_mapHist1D["SumTPilePtZPTs5"] = new TH1F("Sum of Pile Up Track PT ptZ s 5","",100,0,1000);
 			minb_mapHist1D["SumTPilePtZPTs2"] = new TH1F("Sum of Pile Up Track PT ptZ s 2","",100,0,1000);
 			
+			///Cluster PT Histograms
+			minb_mapHist1D["noA"] = new TH1F("PT without Association","",100,0,100);
+			minb_mapHist1D["withA"] = new TH1F("PT with Association","",100,0,100);
+			
+			//2D Histograms
+			minb_mapHist2D["PhiEtaNoA"] = new TH2F("Phi vs Eta no Association","",100,-2.5,2.5,100,-3.5,3.5);
+			minb_mapHist2D["PhiEtaA"] = new TH2F("Phi vs Eta with Association","",100,-2.5,2.5,100,-3.5,3.5);
+			minb_mapHist2D["PhiEtaPrim"] = new TH2F("Phi vs Eta with Primary Association","",100,-2.5,2.5,100,-3.5,3.5);
+			minb_mapHist2D["PhiEtaPile"] = new TH2F("Phi vs Eta with Pile Up Association","",100,-2.5,2.5,100,-3.5,3.5);
 		}
 		///Fill the Historgrams
 		void FillHists(int NumberOfVertices,int aNumberOfInter,vector<double> sumtpt,int cond=0) {
@@ -69,6 +78,28 @@ class Hists{
 					minb_mapHist1D["SumTPtZPTs2"]->Fill(sumtpt[2]);
 					break;
 			}		
+		}
+		
+		void Fill2DHists(double veceta, double vecphi, int cond=0) {
+			///depending on the condition (cond) fill the correct Histograms
+			///			cond = 0 --- no association
+			///			cond = 1 --- with either prim. or pileup assiciated
+			
+			switch (cond){
+				case 0:
+					minb_mapHist2D["PhiEtaNoA"]->Fill(veceta,vecphi);
+					break;
+				case 1:
+					minb_mapHist2D["PhiEtaA"]->Fill(veceta,vecphi);
+					break;					
+				case 2:
+					minb_mapHist2D["PhiEtaPrim"]->Fill(veceta,vecphi);
+					break;
+				case 3:
+					minb_mapHist2D["PhiEtaPile"]->Fill(veceta,vecphi);
+					break;
+					
+			}
 		}
 			
 		void WriteFile(TFile *fileO){

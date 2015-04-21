@@ -1,16 +1,53 @@
 
 ///Sum up the track_pt for BOTH primary and pileup tracks
-double sumtrackpt(vector<double>* prim_track_pt,vector<double>* pile_track_pt){
-	double sumpt=0;
+///			--- result contains ---
+///			--- result[0] contains sum PT of primary tracks ---
+///			--- result[1] contains sum PT of pile up tracks ---
+///			--- result[2] contains the TOTAL PT of pileup and primary tracks ---
+std::vector<double> sumtrackpt(vector<double>* prim_track_pt,vector<double>* pile_track_pt){
+	double sumpt=0,primpt=0,pilept=0;
 	for (int i =0;i<prim_track_pt->size();i++){
 		sumpt+=prim_track_pt->at(i);
+		primpt+=prim_track_pt->at(i);
 	}
 	for (int i=0;i<pile_track_pt->size();i++){
 		sumpt+=pile_track_pt->at(i);
+		pilept+=pile_track_pt->at(i);
 	}
-	return sumpt;
+	std::vector<double> result;
+	result.push_back(primpt/1000);
+	result.push_back(pilept/1000);
+	result.push_back(sumpt/1000);
+	return result;
 }
 
+
+///Check if the Cluster has associated tracks
+///			--- calls Fill2DHists with cond = : ---
+///			--- 0 if cluster has no assiciation ---
+///			--- 1 if cluster has primary association ---
+///			--- 2 if cluster has pile up association ---
+///			--- 3 if cluster has both associations ---			
+int checkassociation(Hists *hist,vector<int>* countPVvec, vector<int>* countSVvec,vector<double>* vecCellsPt,vector<double>* vecCellsEta,vector<double>* vecCellsPhi){
+	for (int i=0;i<vecCellsPt->size();i++) {
+		if (countPVvec->at(i) == 0 && countSVvec == 0){
+			 hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),0);
+			continue;
+		}
+		if (countPVvec->at(i) != 0) {
+			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),2);
+			continue;
+		}
+		if (countSVvec->at(i) != 0) {
+			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),3);
+			continue;
+		}	
+		if (countPVvec->at(i) != 0 || countSVvec != 0) {
+			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),1);
+			continue;
+		}
+	}
+}
 
 ///Check for wether it is a Z-Event with M e (Mmin,Mmax).
 bool Zcheck(vector<int>* charge, vector<double>* pt, vector<double>* eta, vector<double>* phi, TLorentzVector &recoZ, int Mmin, int Mmax) {

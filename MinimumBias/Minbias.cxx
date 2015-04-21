@@ -8,8 +8,8 @@ using namespace std;
 using std::vector;
 
 #include "./setbranches.h"
-#include "./Minbias_functions.h"
 #include "./minhists.h"
+#include "./Minbias_functions.h"
 
 int main(int argc, char *argv[]) {
 	if (argc < 3){ ///Check Parameters
@@ -101,7 +101,8 @@ int main(int argc, char *argv[]) {
 			//totalZ++;
 			sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
 			hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,0);
-		}	
+		}
+		checkassociation(&hist,countPVvec,countSVvec,vecCellsPt,vecCellsEta,vecCellsPhi);	
 	}
 	//cout<<"A total of: "<<totalZ<<" Z Events have been found\n";
 	hist.WriteFile(fileO);
