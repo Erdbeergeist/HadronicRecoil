@@ -23,10 +23,10 @@ int main(int argc, char *argv[]) {
 	
 	string infile = argv[1]; ///Declare I/O Files
 	const char* outfile = argv[2];
-	string arg3 = argv[3];
+
 
 	if (argc == 4){
-		
+		string arg3 = argv[3];	
 		if (arg3 == "0"){ 
 			
 			Zfilt = false;
