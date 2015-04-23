@@ -34,8 +34,8 @@ class Hists{
 			minb_mapHist1D["SumTPilePtZPTs2"] = new TH1F("Sum of Pile Up Track PT ptZ s 2","",100,0,1000);
 			
 			///Cluster PT Histograms
-			minb_mapHist1D["noA"] = new TH1F("PT without Association","",100,0,100);
-			minb_mapHist1D["withA"] = new TH1F("PT with Association","",100,0,100);
+			minb_mapHist1D["noPrimA"] = new TH1F("PT without Primary Association","",100,0,100);
+			minb_mapHist1D["withPrimA"] = new TH1F("PT with Primary Association","",100,0,100);
 			
 			//2D Histograms
 			minb_mapHist2D["PhiEtaNoA"] = new TH2F("Phi vs Eta no Association","",100,-2.5,2.5,100,-3.5,3.5);
@@ -79,12 +79,27 @@ class Hists{
 					break;
 			}		
 		}
-		
+		///Fill the 1D Association Histograms
+		void FillAssoHists(double vecPt,int cond = 0) {
+			///depending on condition (cond) fill the correct Histograms
+			///			cond = 0 --- default, Cluster has not recorded a primary Track
+			///			cond = 1 --- Custer has recorded a Primary Track
+			switch (cond){
+				case 0:
+					minb_mapHist1D["noPrimA"]->Fill(vecPt);
+					break;
+				case 1:
+					minb_mapHist1D["withPrimA"]->Fill(vecPt);
+					break;
+			}	
+		}
+		///FIll the 2D Angle Histograms
 		void Fill2DHists(double veceta, double vecphi, int cond=0) {
 			///depending on the condition (cond) fill the correct Histograms
 			///			cond = 0 --- no association
 			///			cond = 1 --- with either prim. or pileup assiciated
-			
+			///			cond = 2 --- with primary
+			///			cond = 3 --- with pileup
 			switch (cond){
 				case 0:
 					minb_mapHist2D["PhiEtaNoA"]->Fill(veceta,vecphi);

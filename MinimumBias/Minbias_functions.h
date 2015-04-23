@@ -29,22 +29,28 @@ std::vector<double> sumtrackpt(vector<double>* prim_track_pt,vector<double>* pil
 ///			--- 2 if cluster has pile up association ---
 ///			--- 3 if cluster has both associations ---			
 int checkassociation(Hists *hist,vector<int>* countPVvec, vector<int>* countSVvec,vector<double>* vecCellsPt,vector<double>* vecCellsEta,vector<double>* vecCellsPhi){
+	
 	for (int i=0;i<vecCellsPt->size();i++) {
-		if (countPVvec->at(i) == 0 && countSVvec == 0){
+		///		Neither Primary nor Secondary Tracks
+		if ((countPVvec->at(i) == 0) && (countSVvec->at(i) == 0)){
 			 hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),0);
-			continue;
 		}
-		if (countPVvec->at(i) != 0) {
+		///		No Primary Tracks
+		if (countPVvec->at(i) == 0){
+			 hist->FillAssoHists(vecCellsPt->at(i),0);
+		}
+		///		Has Primary Tracks; Secondary does not matter
+		if (countPVvec->at(i) > 0) {
 			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),2);
-			continue;
+			hist->FillAssoHists(vecCellsPt->at(i),1);
 		}
-		if (countSVvec->at(i) != 0) {
+		///		Has Secondary Tracks; Primary does not matter
+		if (countSVvec->at(i) > 0) {
 			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),3);
-			continue;
 		}	
-		if (countPVvec->at(i) != 0 || countSVvec != 0) {
+		///		Has Primary OR Secondary Tracks		
+		if ((countPVvec->at(i) > 0) || (countSVvec->at(i) > 0)) {
 			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),1);
-			continue;
 		}
 	}
 }

@@ -90,19 +90,12 @@ int main(int argc, char *argv[]) {
 			
 		}
 		else if (Zfilt == false) {
-			//cout<<"we are here\n";
-			//TLorentzVector recoZ;
-			//TVector3 mu1,mu2,Zvec;
 			vector<double> sumpt;
-			//mu1.SetPtEtaPhi(mu_pt->at(0),mu_eta->at(0),mu_phi->at(0));
-			//mu2.SetPtEtaPhi(mu_pt->at(1),mu_eta->at(1),mu_phi->at(1));
-			//Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
-			///Incerase totalZ, calculate the HadronicRecoil and fill the Histograms
-			//totalZ++;
 			sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
 			hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,0);
 		}
 		checkassociation(&hist,countPVvec,countSVvec,vecCellsPt,vecCellsEta,vecCellsPhi);	
+		
 	}
 	//cout<<"A total of: "<<totalZ<<" Z Events have been found\n";
 	hist.WriteFile(fileO);
