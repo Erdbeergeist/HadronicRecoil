@@ -33,24 +33,24 @@ int checkassociation(Hists *hist,vector<int>* countPVvec, vector<int>* countSVve
 	for (int i=0;i<vecCellsPt->size();i++) {
 		///		Neither Primary nor Secondary Tracks
 		if ((countPVvec->at(i) == 0) && (countSVvec->at(i) == 0)){
-			 hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),0);
+			 hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),0,0);
 		}
 		///		No Primary Tracks
 		if (countPVvec->at(i) == 0){
 			 hist->FillAssoHists(vecCellsPt->at(i),0);
 		}
-		///		Has Primary Tracks; Secondary does not matter
-		if (countPVvec->at(i) > 0) {
-			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),2);
+		///		Has Primary Tracks; NO Secondary 
+		if (countPVvec->at(i) > 0 && countSVvec->at(i)<1) {
+			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),2);
 			hist->FillAssoHists(vecCellsPt->at(i),1);
 		}
-		///		Has Secondary Tracks; Primary does not matter
-		if (countSVvec->at(i) > 0) {
-			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),3);
+		///		Has Secondary Tracks; NO Primary
+		if (countSVvec->at(i) > 0 && countPVvec->at(i)< 1) {
+			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),3);
 		}	
 		///		Has Primary OR Secondary Tracks		
 		if ((countPVvec->at(i) > 0) || (countSVvec->at(i) > 0)) {
-			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),1);
+			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),1);
 		}
 	}
 }

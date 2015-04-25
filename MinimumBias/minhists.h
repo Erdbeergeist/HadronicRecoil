@@ -37,11 +37,19 @@ class Hists{
 			minb_mapHist1D["noPrimA"] = new TH1F("PT without Primary Association","",100,0,100);
 			minb_mapHist1D["withPrimA"] = new TH1F("PT with Primary Association","",100,0,100);
 			
-			//2D Histograms
+			///2D Histograms
+			//Association Histograms
 			minb_mapHist2D["PhiEtaNoA"] = new TH2F("Phi vs Eta no Association","",100,-2.5,2.5,100,-3.5,3.5);
 			minb_mapHist2D["PhiEtaA"] = new TH2F("Phi vs Eta with Association","",100,-2.5,2.5,100,-3.5,3.5);
 			minb_mapHist2D["PhiEtaPrim"] = new TH2F("Phi vs Eta with Primary Association","",100,-2.5,2.5,100,-3.5,3.5);
 			minb_mapHist2D["PhiEtaPile"] = new TH2F("Phi vs Eta with Pile Up Association","",100,-2.5,2.5,100,-3.5,3.5);
+			
+			//Angle vs PT Histograms
+			minb_mapHist2D["EtavsPt"] = new TH2F("Eta vs Pt","",100,0,100,100,-2.5,2.5);
+			minb_mapHist2D["EtavsPrimPt"] = new TH2F("Eta vs Pt with Primary Association","",100,0,100,100,-2.5,2.5);
+			minb_mapHist2D["EtavsPtnoAsso"] = new TH2F("Eta vs Pt without Association","",100,0,100,100,-2.5,2.5);
+			minb_mapHist2D["EtavsPilePt"] = new TH2F("Eta vs Phi with Pileup Association","",100,0,100,100,-2.5,2.5);
+			
 		}
 		///Fill the Historgrams
 		void FillHists(int NumberOfVertices,int aNumberOfInter,vector<double> sumtpt,int cond=0) {
@@ -94,24 +102,28 @@ class Hists{
 			}	
 		}
 		///FIll the 2D Angle Histograms
-		void Fill2DHists(double veceta, double vecphi, int cond=0) {
+		void Fill2DHists(double veceta, double vecphi, double vecpt, int cond=0) {
 			///depending on the condition (cond) fill the correct Histograms
 			///			cond = 0 --- no association
 			///			cond = 1 --- with either prim. or pileup assiciated
-			///			cond = 2 --- with primary
-			///			cond = 3 --- with pileup
+			///			cond = 2 --- with primary only
+			///			cond = 3 --- with pileup only 
 			switch (cond){
 				case 0:
 					minb_mapHist2D["PhiEtaNoA"]->Fill(veceta,vecphi);
+					minb_mapHist2D["EtavsPtnoAsso"]->Fill(vecpt,veceta);
 					break;
 				case 1:
 					minb_mapHist2D["PhiEtaA"]->Fill(veceta,vecphi);
+					minb_mapHist2D["EtavsPt"]->Fill(vecpt,veceta);
 					break;					
 				case 2:
 					minb_mapHist2D["PhiEtaPrim"]->Fill(veceta,vecphi);
+					minb_mapHist2D["EtavsPrimPt"]->Fill(vecpt,veceta);
 					break;
 				case 3:
 					minb_mapHist2D["PhiEtaPile"]->Fill(veceta,vecphi);
+					minb_mapHist2D["EtavsPilePt"]->Fill(vecpt,veceta);
 					break;
 					
 			}
