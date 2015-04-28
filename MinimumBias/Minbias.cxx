@@ -61,7 +61,8 @@ int main(int argc, char *argv[]) {
 		tree->GetEntry(i);
 		/// Wether or not to check ZEvents
 		if (Zfilt == true){
-			for (int cond=0;cond<4;cond++){
+			
+			for (int cond=0;cond<5;cond++){
 				TLorentzVector recoZ;
 				///Check for ZEvents with the given Minimum & Maximum Mass
 				switch (cond) {
@@ -69,25 +70,30 @@ int main(int argc, char *argv[]) {
 						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax);
 						break;
 					case 1:
-						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,20,ZMmax);
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,20);
 						break;
 					case 2:
-						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,5);
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,10);
 						break;
 					case 3:
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,5);
+						break;
+					case 4:
 						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,2);
 						break;
 				}		
 			
 				if (isZ == true) {
 					///Initialize the Vectors and assign the values
-					TVector3 mu1,mu2,Zvec;
+					TVector3 mu1,mu2,Zvec,hadrec;
 					mu1.SetPtEtaPhi(mu_pt->at(0),mu_eta->at(0),mu_phi->at(0));
 					mu2.SetPtEtaPhi(mu_pt->at(1),mu_eta->at(1),mu_phi->at(1));
 					Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
 					
 					///Incerase totalZ, calculate the HadronicRecoil and fill the Histograms
-					
+					///Hadronic Recoil calculated by adding up everything but muons
+					hadrec = calcHadronicRecoil(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2);
+					hist.FillHadrecHists(hadrec);
 					vector<double> sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
 					hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,cond);
 					isZ = false;
@@ -98,13 +104,48 @@ int main(int argc, char *argv[]) {
 		///NO check for ZEvents, take every event (MinimumBias)
 		else if (Zfilt == false) {
 			vector<double> sumpt;
-			sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
-			hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,0);
+			for (int i =0;i < 5;i++){
+				switch (i) {
+					case 0:
+						/// No Condition
+						sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
+						hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,i);
+						break;
+					case 1:
+						///Mean Track PT lower than 20 GeV (pileup & primary)
+						if (checktrackpt(prim_track_pt,pile_track_pt,20000,2) == true) {
+							sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
+							hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,i);
+							break;
+						}
+					case 2:
+						///Mean Track PT lower than 10 GeV (pileup & primary)
+						if (checktrackpt(prim_track_pt,pile_track_pt,10000,2) == true) {
+							sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
+							hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,i);
+							break;
+						}	
+					case 3:
+						///Mean Track PT lower than 5 GeV (pileup & primary)
+						if (checktrackpt(prim_track_pt,pile_track_pt,5000,2) == true) {
+							sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
+							hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,i);
+							break;
+						}		
+					case 4:
+						///Mean Track PT lowerthan 2 GeV (pileup & primary)
+						if (checktrackpt(prim_track_pt,pile_track_pt,2000,2) == true) {
+							sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
+							hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,i);
+							break;
+						}			
+				}
+			}
+					
 		}
 		///Check the Track Association and Fill the correct histograms
-		checkassociation(&hist,countPVvec,countSVvec,vecCellsPt,vecCellsEta,vecCellsPhi);	
-		
-	}
+		checkassociation(&hist,countPVvec,countSVvec,vecCellsPt,vecCellsEta,vecCellsPhi,NumberOfVertices);	
+	}	
 	//cout<<"A total of: "<<totalZ<<" Z Events have been found\n";
 	hist.WriteFile(fileO);
 	
