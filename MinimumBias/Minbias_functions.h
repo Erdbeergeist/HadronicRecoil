@@ -78,30 +78,61 @@ bool checktrackpt(vector<double>* prim_track_pt,vector<double>*pile_track_pt,int
 ///			--- 1 if cluster has primary association ---
 ///			--- 2 if cluster has pile up association ---
 ///			--- 3 if cluster has both associations ---			
-int checkassociation(Hists *hist,vector<int>* countPVvec, vector<int>* countSVvec,vector<double>* vecCellsPt,vector<double>* vecCellsEta,vector<double>* vecCellsPhi,int NumberofVertices){
+void checkassociation(Hists *hist,vector<int>* countPVvec, vector<int>* countSVvec,vector<double>* vecCellsPt,vector<double>* vecCellsEta,vector<double>* vecCellsPhi,int NumberofVertices){
+	bool prim = false,pile = false;
+	double pt =0,eta=0,phi=0;
 	
 	for (int i=0;i<vecCellsPt->size();i++) {
+		prim = false;
+		pile = false;
+		pt = vecCellsPt->at(i);
+		eta = vecCellsEta->at(i);
+		phi = vecCellsPhi->at(i);
+		if (countPVvec->at(i) > 0) prim = true;
+		if (countSVvec->at(i) > 0) pile = true;
+		
+		if (prim == true){
+			hist->Fill2DHists(eta,phi,pt,1,NumberofVertices);
+			if (pile == false) {
+				hist->Fill2DHists(eta,phi,pt,2);
+				hist->FillAssoHists(pt,1);
+			}
+			continue;
+		}
+		else {
+			hist->FillAssoHists(pt,0);
+			if (pile == true) {
+				hist->Fill2DHists(eta,phi,pt,1,NumberofVertices);
+				hist->Fill2DHists(eta,phi,pt,3);
+				continue;
+			}
+			else hist->Fill2DHists(eta,phi,0,0);
+		}
+		
+		/////		Has Primary OR Secondary Tracks		
+		//if ((countPVvec->at(i) > 0) || (countSVvec->at(i) > 0)) {
+		//	hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),1,NumberofVertices);
+		//}
+		
 		///		Neither Primary nor Secondary Tracks
-		if ((countPVvec->at(i) == 0) && (countSVvec->at(i) == 0)){
-			 hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),0,0);
-		}
+		//if ((countPVvec->at(i) == 0) && (countSVvec->at(i) == 0)){
+		//	 hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),0,0);
+			
+	//	}
 		///		No Primary Tracks
-		if (countPVvec->at(i) == 0){
-			 hist->FillAssoHists(vecCellsPt->at(i),0);
-		}
+	//	if (countPVvec->at(i) == 0){
+	//		 hist->FillAssoHists(vecCellsPt->at(i),0);
+	//	}
 		///		Has Primary Tracks; NO Secondary 
-		if (countPVvec->at(i) > 0 && countSVvec->at(i)<1) {
-			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),2);
-			hist->FillAssoHists(vecCellsPt->at(i),1);
-		}
+	//	if (countPVvec->at(i) > 0 && countSVvec->at(i)<1) {
+	//		hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),2);
+		//	hist->FillAssoHists(vecCellsPt->at(i),1);
+	//	}
 		///		Has Secondary Tracks; NO Primary
-		if (countSVvec->at(i) > 0 && countPVvec->at(i)< 1) {
-			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),3);
-		}	
-		///		Has Primary OR Secondary Tracks		
-		if ((countPVvec->at(i) > 0) || (countSVvec->at(i) > 0)) {
-			hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),1,NumberofVertices);
-		}
+		//if (countSVvec->at(i) > 0 && countPVvec->at(i)< 1) {
+		//	hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),3);
+		//}	
+		
 	}
 }
 
