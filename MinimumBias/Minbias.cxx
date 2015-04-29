@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
 					
 		}
 		///Check the Track Association and Fill the correct histograms
-		//checkassociation(&hist,countPVvec,countSVvec,vecCellsPt,vecCellsEta,vecCellsPhi,NumberOfVertices);	
+		checkassociation(&hist,countPVvec,countSVvec,vecCellsPt,vecCellsEta,vecCellsPhi,NumberOfVertices);	
 	}	
 	//cout<<"A total of: "<<totalZ<<" Z Events have been found\n";
 	hist.WriteFile(fileO);
