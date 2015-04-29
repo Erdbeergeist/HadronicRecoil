@@ -81,7 +81,6 @@ bool checktrackpt(vector<double>* prim_track_pt,vector<double>*pile_track_pt,int
 void checkassociation(Hists *hist,vector<int>* countPVvec, vector<int>* countSVvec,vector<double>* vecCellsPt,vector<double>* vecCellsEta,vector<double>* vecCellsPhi,int NumberofVertices){
 	bool prim = false,pile = false;
 	double pt =0,eta=0,phi=0;
-	
 	for (int i=0;i<vecCellsPt->size();i++) {
 		prim = false;
 		pile = false;
@@ -146,8 +145,8 @@ bool Zcheck(vector<int>* charge, vector<double>* pt, vector<double>* eta, vector
 		mu1.SetPtEtaPhiM(pt->at(0),eta->at(0),phi->at(0),105.6);
 		mu2.SetPtEtaPhiM(pt->at(1),eta->at(1),phi->at(1),105.6);
 		recoZ = mu1+mu2;
-		double mass = recoZ.M()/1000;
-		if (mass> Mmin) if (mass< Mmax)	Zevent = true;///Check if M is within given boundaries
+		double pt = recoZ.Pt()/1000;
+		if (pt> Mmin) if (pt< Mmax)	Zevent = true;///Check if PT is within given boundaries
 	}
 	return Zevent;
 }
