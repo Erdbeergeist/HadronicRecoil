@@ -67,30 +67,32 @@ int main(int argc, char *argv[]) {
 				///Check for ZEvents with the given Minimum & Maximum Mass
 				switch (cond) {
 					case 0:
-						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax);
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax,&hist);
+						
 						break;
 					case 1:
-						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,20);
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,10,20,&hist);
 						break;
 					case 2:
-						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,10);
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,5,10,&hist);
 						break;
 					case 3:
-						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,5);
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,2,5,&hist);
 						break;
 					case 4:
-						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,2);
+						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,2,&hist);
 						break;
 				}		
 			
 				if (isZ == true) {
+					
 					///Initialize the Vectors and assign the values
 					TVector3 mu1,mu2,Zvec,hadrec;
 					mu1.SetPtEtaPhi(mu_pt->at(0),mu_eta->at(0),mu_phi->at(0));
 					mu2.SetPtEtaPhi(mu_pt->at(1),mu_eta->at(1),mu_phi->at(1));
 					Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
 					
-					///Incerase totalZ, calculate the HadronicRecoil and fill the Histograms
+					
 					///Hadronic Recoil calculated by adding up everything but muons
 					hadrec = calcHadronicRecoil(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2);
 					hist.FillHadrecHists(hadrec);
@@ -104,7 +106,9 @@ int main(int argc, char *argv[]) {
 		///NO check for ZEvents, take every event (MinimumBias)
 		else if (Zfilt == false) {
 			vector<double> sumpt;
-			for (int i =0;i < 5;i++){
+			TLorentzVector recoZ;
+			isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax,&hist);
+			for (int i =0;i < 1;i++){
 				switch (i) {
 					case 0:
 						/// No Condition
@@ -144,7 +148,7 @@ int main(int argc, char *argv[]) {
 					
 		}
 		///Check the Track Association and Fill the correct histograms
-		checkassociation(&hist,countPVvec,countSVvec,vecCellsPt,vecCellsEta,vecCellsPhi,NumberOfVertices);	
+		//checkassociation(&hist,countPVvec,countSVvec,vecCellsPt,vecCellsEta,vecCellsPhi,NumberOfVertices);	
 	}	
 	//cout<<"A total of: "<<totalZ<<" Z Events have been found\n";
 	hist.WriteFile(fileO);

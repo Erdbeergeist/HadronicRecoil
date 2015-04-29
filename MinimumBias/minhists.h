@@ -50,6 +50,10 @@ class Hists{
 			minb_mapHist1D["HadEta"] = new TH1F("Hadronic Recoil Eta","",100,-2.5,2.5);
 			minb_mapHist1D["HadPhi"] = new TH1F("Hadronic Recoil Phi","",100,-3.5,3.5);
 		
+			///Number of Muons, PTZ, M(Z)
+			minb_mapHist1D["nmu"] = new TH1F("Number of Muons","",20,0,20);
+			minb_mapHist1D["ptz"] = new TH1F("PT of Z","",100,0,100);
+			minb_mapHist1D["mz"] = new TH1F("Mass of Z ","",100,0,110);
 			
 			///2D Histograms
 			//Association Histograms
@@ -72,9 +76,9 @@ class Hists{
 		void FillHists(int NumberOfVertices,int aNumberOfInter,vector<double> sumtpt,int cond=0) {
 			///depending on the condition (cond) fill the correct Histograms
 			///			cond = 0 --- no Condition for Track (or Z) PT
-			///			cond = 1 --- Track (or Z) PT > 20 GeV
-			///			cond = 2 --- Track (or Z) PT > 10 GeV
-			///			cond = 3 --- Track (or Z) PT < 5 GeV
+			///			cond = 1 --- Track (or Z) PT > 10 <20
+			///			cond = 2 --- Track (or Z) PT >5 <10
+			///			cond = 3 --- Track (or Z) PT >2 <5
 			///			cond = 4 --- Track (or Z) PT < 2 GeV
 			
 				switch (cond){
@@ -82,41 +86,52 @@ class Hists{
 						minb_mapHist1D["NoV"]->Fill(NumberOfVertices);
 						minb_mapHist1D["NInt"]->Fill(aNumberOfInter);
 						minb_mapHist1D["SumTPt"]->Fill(sumtpt[2]);
-						minb_mapHist1D["SumTPrimPt"]->Fill(sumtpt[1]);
-						minb_mapHist1D["SumTPilePt"]->Fill(sumtpt[0]);
+						minb_mapHist1D["SumTPrimPt"]->Fill(sumtpt[0]);
+						minb_mapHist1D["SumTPilePt"]->Fill(sumtpt[1]);
 						break;
 					case 1:
 						minb_mapHist1D["NoVPTs20"]->Fill(NumberOfVertices);
 						minb_mapHist1D["NIntPTs20"]->Fill(aNumberOfInter);
 						minb_mapHist1D["SumTPts20"]->Fill(sumtpt[2]);
-						minb_mapHist1D["SumTPrimPts20"]->Fill(sumtpt[1]);
-						minb_mapHist1D["SumTPilePts20"]->Fill(sumtpt[0]);
+						minb_mapHist1D["SumTPrimPts20"]->Fill(sumtpt[0]);
+						minb_mapHist1D["SumTPilePts20"]->Fill(sumtpt[1]);
 						break;
 					case 2:
 						minb_mapHist1D["NoVPTs10"]->Fill(NumberOfVertices);
 						minb_mapHist1D["NIntPTs10"]->Fill(aNumberOfInter);
 						minb_mapHist1D["SumTPts10"]->Fill(sumtpt[2]);
-						minb_mapHist1D["SumTPrimPts10"]->Fill(sumtpt[1]);
-						minb_mapHist1D["SumTPilePts10"]->Fill(sumtpt[0]);
+						minb_mapHist1D["SumTPrimPts10"]->Fill(sumtpt[0]);
+						minb_mapHist1D["SumTPilePts10"]->Fill(sumtpt[1]);
 						break;	
 					case 3:
 						minb_mapHist1D["NoVPTs5"]->Fill(NumberOfVertices);
 						minb_mapHist1D["NIntPTs5"]->Fill(aNumberOfInter);
 						minb_mapHist1D["SumTPts5"]->Fill(sumtpt[2]);
-						minb_mapHist1D["SumTPrimPts5"]->Fill(sumtpt[1]);
-						minb_mapHist1D["SumTPilePts5"]->Fill(sumtpt[0]);
+						minb_mapHist1D["SumTPrimPts5"]->Fill(sumtpt[0]);
+						minb_mapHist1D["SumTPilePts5"]->Fill(sumtpt[1]);
 						break;
 					case 4:
 						minb_mapHist1D["NoVPTs2"]->Fill(NumberOfVertices);
 						minb_mapHist1D["NIntPTs2"]->Fill(aNumberOfInter);
 						minb_mapHist1D["SumTPts2"]->Fill(sumtpt[2]);
-						minb_mapHist1D["SumTPrimPts2"]->Fill(sumtpt[1]);
-						minb_mapHist1D["SumTPilePts2"]->Fill(sumtpt[0]);
+						minb_mapHist1D["SumTPrimPts2"]->Fill(sumtpt[0]);
+						minb_mapHist1D["SumTPilePts2"]->Fill(sumtpt[1]);
 						break;
 				}
 		}
 			
-				
+		///Fill Number of Muons, PTZ, M(Z)
+		void FillZHists(int nmu,double ptz,double mz,int cond){
+			switch (cond){
+				case 0:
+					minb_mapHist1D["nmu"]->Fill(nmu);
+					break;
+				case 1:
+					minb_mapHist1D["ptz"]->Fill(ptz);
+					minb_mapHist1D["mz"]->Fill(mz);
+					break;
+			}
+		} 	
 		
 		///Fill the 1D Association Histograms
 		void FillAssoHists(double vecPt,int cond = 0) {
