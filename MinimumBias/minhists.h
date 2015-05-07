@@ -50,6 +50,11 @@ class Hists{
 			minb_mapHist1D["HadEta"] = new TH1F("Hadronic Recoil Eta","",100,-2.5,2.5);
 			minb_mapHist1D["HadPhi"] = new TH1F("Hadronic Recoil Phi","",100,-3.5,3.5);
 		
+			///Energy and PT Histograms
+			minb_mapHist1D["EoPT"] = new TH1F("E over PT","",100,0,100);
+			minb_mapHist1D["EmPT"] = new TH1F("E minus PT","",100,0,100);
+			
+			
 			///Number of Muons, PTZ, M(Z)
 			minb_mapHist1D["nmu"] = new TH1F("Number of Muons","",20,0,20);
 			minb_mapHist1D["ptz"] = new TH1F("PT of Z","",100,0,100);
@@ -70,16 +75,18 @@ class Hists{
 			//#Vertices vs PT Histogrmas
 			minb_mapHist2D["NVvsPt"] = new TH2F("Number of Vertices vs PT","",100,0,100,50,0,50);
 			
+			///Eta vs ZPT
+			minb_mapHist2D["EtavZPT"] = new TH2F("Eta vs ZPT","",100,0,100,100,-2.5,2.5);
 			
 		}
 		///Fill the Historgrams
 		void FillHists(int NumberOfVertices,int aNumberOfInter,vector<double> sumtpt,int cond=0) {
 			///depending on the condition (cond) fill the correct Histograms
 			///			cond = 0 --- no Condition for Track (or Z) PT
-			///			cond = 1 --- Track (or Z) PT > 10 <20
-			///			cond = 2 --- Track (or Z) PT >5 <10
-			///			cond = 3 --- Track (or Z) PT >2 <5
-			///			cond = 4 --- Track (or Z) PT < 2 GeV
+			///			cond = 1 --- ZPT > 10 <20
+			///			cond = 2 --- ZPT >5 <10
+			///			cond = 3 --- ZPT >2 <5
+			///			cond = 4 --- ZPT <2 
 			
 				switch (cond){
 					case 0:
@@ -129,9 +136,15 @@ class Hists{
 				case 1:
 					minb_mapHist1D["ptz"]->Fill(ptz);
 					minb_mapHist1D["mz"]->Fill(mz);
+					minb_mapHist1D["EoPT"]->Fill(sqrt(1+pow(mz,2)/pow(ptz,2)));
+					minb_mapHist1D["EmPT"]->Fill(sqrt(pow(ptz,2)+pow(mz,2))-ptz);
 					break;
 			}
 		} 	
+		///Fill 2D Z Histograms
+		void Fill2DZHists(TLorentzVector &recoZ){
+			minb_mapHist2D["EtavZPT"]->Fill(recoZ.Pt()/1000,recoZ.Eta());
+		}
 		
 		///Fill the 1D Association Histograms
 		void FillAssoHists(double vecPt,int cond = 0) {
@@ -186,10 +199,6 @@ class Hists{
 			fileO->Close();
 		}
 		
-		///Set minbana; Use this to set the analysis mode to MinimumBias
-		void setminbias() {
-			//minbana = true;
-		}
 	private:
 		map<string, TH1*>		minb_mapHist1D;
 		map<string, TH2*>		minb_mapHist2D;

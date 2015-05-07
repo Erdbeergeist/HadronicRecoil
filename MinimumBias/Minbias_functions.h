@@ -81,15 +81,16 @@ bool checktrackpt(vector<double>* prim_track_pt,vector<double>*pile_track_pt,int
 void checkassociation(Hists *hist,vector<int>* countPVvec, vector<int>* countSVvec,vector<double>* vecCellsPt,vector<double>* vecCellsEta,vector<double>* vecCellsPhi,int NumberofVertices){
 	bool prim = false,pile = false;
 	double pt =0,eta=0,phi=0;
+	int empty=0;
 	for (int i=0;i<vecCellsPt->size();i++) {
-		prim = false;
-		pile = false;
+		prim = true;
+		pile = true;
 		pt = vecCellsPt->at(i);
 		eta = vecCellsEta->at(i);
 		phi = vecCellsPhi->at(i);
-		if (countPVvec->at(i) > 0) prim = true;
-		if (countSVvec->at(i) > 0) pile = true;
-		
+		if (countPVvec->at(i) == 0) prim = false;
+		if (countSVvec->at(i) == 0) pile = false;
+	
 		if (prim == true){
 			hist->Fill2DHists(eta,phi,pt,1,NumberofVertices);
 			if (pile == false) {
@@ -98,7 +99,7 @@ void checkassociation(Hists *hist,vector<int>* countPVvec, vector<int>* countSVv
 			}
 			continue;
 		}
-		else {
+		else if (prim == false) {
 			hist->FillAssoHists(pt,0);
 			if (pile == true) {
 				hist->Fill2DHists(eta,phi,pt,1,NumberofVertices);

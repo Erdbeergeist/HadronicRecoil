@@ -68,7 +68,6 @@ int main(int argc, char *argv[]) {
 				switch (cond) {
 					case 0:
 						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax,&hist);
-						
 						break;
 					case 1:
 						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,10,20,&hist);
@@ -91,7 +90,7 @@ int main(int argc, char *argv[]) {
 					mu1.SetPtEtaPhi(mu_pt->at(0),mu_eta->at(0),mu_phi->at(0));
 					mu2.SetPtEtaPhi(mu_pt->at(1),mu_eta->at(1),mu_phi->at(1));
 					Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
-					
+					hist.Fill2DZHists(recoZ);
 					
 					///Hadronic Recoil calculated by adding up everything but muons
 					hadrec = calcHadronicRecoil(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2);
@@ -113,7 +112,7 @@ int main(int argc, char *argv[]) {
 					case 0:
 						/// No Condition
 						sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
-						hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,i);
+						hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,0);
 						break;
 					case 1:
 						///Mean Track PT lower than 20 GeV (pileup & primary)
