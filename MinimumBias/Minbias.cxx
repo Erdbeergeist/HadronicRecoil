@@ -90,11 +90,12 @@ int main(int argc, char *argv[]) {
 					mu1.SetPtEtaPhi(mu_pt->at(0),mu_eta->at(0),mu_phi->at(0));
 					mu2.SetPtEtaPhi(mu_pt->at(1),mu_eta->at(1),mu_phi->at(1));
 					Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
-					hist.Fill2DZHists(recoZ);
+					
 					
 					///Hadronic Recoil calculated by adding up everything but muons
 					hadrec = calcHadronicRecoil(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2);
 					hist.FillHadrecHists(hadrec);
+					hist.Fill2DZHists(recoZ,NumberOfVertices,hadrec);
 					vector<double> sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
 					hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,cond);
 					isZ = false;

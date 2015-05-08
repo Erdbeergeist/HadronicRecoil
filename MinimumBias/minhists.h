@@ -75,9 +75,10 @@ class Hists{
 			//#Vertices vs PT Histogrmas
 			minb_mapHist2D["NVvsPt"] = new TH2F("Number of Vertices vs PT","",100,0,100,50,0,50);
 			
-			///Eta vs ZPT
+			///#Various vs ZPT
 			minb_mapHist2D["EtavZPT"] = new TH2F("Eta vs ZPT","",100,0,100,100,-2.5,2.5);
-			
+			minb_mapHist2D["NVvZPT"] = new TH2F("Number of Vertices vs ZPT","",100,0,100,30,0,30);
+			minb_mapHist2D["PTTvZPT"] = new TH2F("Track PT vs ZPT","",100,0,100,100,0,100);
 		}
 		///Fill the Historgrams
 		void FillHists(int NumberOfVertices,int aNumberOfInter,vector<double> sumtpt,int cond=0) {
@@ -142,8 +143,10 @@ class Hists{
 			}
 		} 	
 		///Fill 2D Z Histograms
-		void Fill2DZHists(TLorentzVector &recoZ){
+		void Fill2DZHists(TLorentzVector &recoZ,int NumberOfVertices,TVector3 hadrec){
 			minb_mapHist2D["EtavZPT"]->Fill(recoZ.Pt()/1000,recoZ.Eta());
+			minb_mapHist2D["NVvZPT"]->Fill(recoZ.Pt()/1000,NumberOfVertices);
+			minb_mapHist2D["PTTvZPT"]->Fill(recoZ.Pt()/1000,hadrec.Pt()/1000);
 		}
 		
 		///Fill the 1D Association Histograms
