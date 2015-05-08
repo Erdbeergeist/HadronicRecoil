@@ -79,6 +79,7 @@ class Hists{
 			minb_mapHist2D["EtavZPT"] = new TH2F("Eta vs ZPT","",100,0,100,100,-2.5,2.5);
 			minb_mapHist2D["NVvZPT"] = new TH2F("Number of Vertices vs ZPT","",100,0,100,30,0,30);
 			minb_mapHist2D["PTTvZPT"] = new TH2F("Track PT vs ZPT","",100,0,100,100,0,100);
+			
 		}
 		///Fill the Historgrams
 		void FillHists(int NumberOfVertices,int aNumberOfInter,vector<double> sumtpt,int cond=0) {

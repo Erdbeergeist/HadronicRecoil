@@ -147,7 +147,7 @@ bool Zcheck(vector<int>* charge, vector<double>* pt, vector<double>* eta, vector
 		mu2.SetPtEtaPhiM(pt->at(1),eta->at(1),phi->at(1),105.6);
 		if (mu1.Pt()>=20000 && mu2.Pt()>=20000){
 			recoZ = mu1+mu2;
-			hist->FillZHists(0,recoZ.Pt()/1000,recoZ.M()/1000,1);
+			
 			if (recoZ.M()>=66000 && recoZ.M()<=106000){
 				double pt = recoZ.Pt()/1000;
 				if (pt> Mmin) if (pt< Mmax)	Zevent = true;///Check if PT is within given boundaries
@@ -155,7 +155,7 @@ bool Zcheck(vector<int>* charge, vector<double>* pt, vector<double>* eta, vector
 							
 		}
 	}
-	hist->FillZHists(pt->size(),0,0,0);
+	
 	return Zevent;
 }
 

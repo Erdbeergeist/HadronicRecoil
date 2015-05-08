@@ -68,6 +68,7 @@ int main(int argc, char *argv[]) {
 				switch (cond) {
 					case 0:
 						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax,&hist);
+						hist.FillZHists(mu_pt->size(),0,0,0);
 						break;
 					case 1:
 						isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,10,20,&hist);
@@ -95,7 +96,10 @@ int main(int argc, char *argv[]) {
 					///Hadronic Recoil calculated by adding up everything but muons
 					hadrec = calcHadronicRecoil(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2);
 					hist.FillHadrecHists(hadrec);
-					hist.Fill2DZHists(recoZ,NumberOfVertices,hadrec);
+					if (cond == 0) {
+						hist.Fill2DZHists(recoZ,NumberOfVertices,hadrec);
+						hist.FillZHists(0,recoZ.Pt()/1000,recoZ.M()/1000,1);
+					}
 					vector<double> sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
 					hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,cond);
 					isZ = false;
