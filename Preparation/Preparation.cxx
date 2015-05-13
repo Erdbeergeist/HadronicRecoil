@@ -17,7 +17,9 @@ int main(int argc, char *argv[]) {
 	const char* output_filename = argv[2];
 	
 	TFile *file0 = new TFile(output_filename, "RECREATE");
-	
+	std::vector<double> all_track_pt;
+	std::vector<double> all_track_eta;
+	std::vector<double> all_track_phi;
 	std::vector<double> prim_track_pt;
 	std::vector<double> prim_track_eta;
 	std::vector<double> prim_track_phi;
@@ -71,6 +73,9 @@ int main(int argc, char *argv[]) {
 	MCCtree->Branch("pile_track_pt",&pile_track_pt);
 	MCCtree->Branch("pile_track_eta",&pile_track_eta);
 	MCCtree->Branch("pile_track_phi",&pile_track_phi);
+	MCCtree->Branch("all_track_pt",&all_track_pt);
+	MCCtree->Branch("all_track_eta",&all_track_eta);
+	MCCtree->Branch("all_track_phi",&all_track_phi);
 	
 	std::vector<std::string> vec_Filenames;
 	vec_Filenames.push_back(filename.c_str());
@@ -87,9 +92,10 @@ int main(int argc, char *argv[]) {
 
 		FillMainzCaloCellVector(m_event, vecCaloCells);
 		
+		std::vector<TVector3> alltracks = GetAllTracks(m_event);
 
 		// Store vector in five Branches of MCCtree
-		StoreInTree(m_event, vecCaloCells, vecCellsPt, vecCellsEta, vecCellsPhi, SumPtPVvec, countPVvec, SumPtSVvec, countSVvec, Event_Nr, Run_Nr, averageNumberOfInteractions, mu_pt, mu_eta, mu_phi, mu_IsolationParam_ptcone20, mu_charge, NumberOfVertices, jet_pt, jet_eta, jet_phi, MCCtree,prim_track_pt,prim_track_eta,prim_track_phi,pile_track_pt,pile_track_eta,pile_track_phi);
+		StoreInTree(m_event, vecCaloCells, vecCellsPt, vecCellsEta, vecCellsPhi, SumPtPVvec, countPVvec, SumPtSVvec, countSVvec, Event_Nr, Run_Nr, averageNumberOfInteractions, mu_pt, mu_eta, mu_phi, mu_IsolationParam_ptcone20, mu_charge, NumberOfVertices, jet_pt, jet_eta, jet_phi, MCCtree,prim_track_pt,prim_track_eta,prim_track_phi,pile_track_pt,pile_track_eta,pile_track_phi,alltracks,all_track_pt,all_track_eta,all_track_phi);
 		
 				
 	}

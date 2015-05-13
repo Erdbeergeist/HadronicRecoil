@@ -11,6 +11,8 @@ struct MainzCaloCell{
 	double		sumPtOfAssociatedPileUpVertexTracks;
 };
 
+
+
 bool isPrimaryVertexTrack(float track_pt, float track_eta, float track_d0, float track_z0sintheta, int track_PixHits, int track_SCTHits){//#LM what is PixHits,SCTHits
 	// Does the Track belong to the PV?
 	    	if (	(track_pt > 500)
@@ -24,7 +26,16 @@ bool isPrimaryVertexTrack(float track_pt, float track_eta, float track_d0, float
 	        return false;
 	    } //end of isPrimaryVertexTrack
 
-
+std::vector<TVector3> GetAllTracks(EWQuickEvent *event){
+	std::vector<TVector3> alltracks;
+	TVector3 tTrack;
+	for (int i =0;i<event->trk_eta_atCalo2ndLayer->size();i++){
+		float track_pt = fabs(1.0/(event->trk_qoverp_wrtPV->at(i)) * sin(event->trk_theta_wrtPV->at(i)));
+		tTrack.SetPtEtaPhi(track_pt,event->trk_eta_atCalo2ndLayer->at(i),event->trk_phi_atCalo2ndLayer->at(i));
+		alltracks.push_back(tTrack);
+	}
+	return alltracks;
+}
 
 void MainzCaloCellLoop(EWQuickEvent *event, TVector3 vecCell, std::vector<TVector3> &primtracks, std::vector<TVector3> &pileuptracks, std::vector<int> vecPosition, double &sumPtPV, double &sumPtSV, int &countPV, int &countSV) {
 	
@@ -86,7 +97,7 @@ void categoriseTracks(EWQuickEvent *event, std::vector<int> &vecVLeft, std::vect
 
 
 
-void StoreInTree(EWQuickEvent *event, std::vector<MainzCaloCell> vecCaloCells, std::vector<double> &vecCellsPt, std::vector<double> &vecCellsEta, std::vector<double> &vecCellsPhi, std::vector<double> &SumPtPVvec, std::vector<int> &countPVvec, std::vector<double> &SumPtSVvec, std::vector<int> &countSVvec, UInt_t &Event_Nr, UInt_t &Run_Nr, Float_t &averageNumberOfInteractions, std::vector<double> &mu_pt, std::vector<double> &mu_eta, std::vector<double> &mu_phi, std::vector<double> &mu_IsolationParam_ptcone20, std::vector<int> &mu_charge, int &NumberOfVertices, std::vector<double> &jet_pt, std::vector<double> &jet_eta, std::vector<double> &jet_phi, TTree *tree, std::vector<double> &prim_track_pt, std::vector<double> &prim_track_eta, std::vector<double> &prim_track_phi,std::vector<double> &pile_track_pt,std::vector<double> &pile_track_eta, std::vector<double> &pile_track_phi){
+void StoreInTree(EWQuickEvent *event, std::vector<MainzCaloCell> vecCaloCells, std::vector<double> &vecCellsPt, std::vector<double> &vecCellsEta, std::vector<double> &vecCellsPhi, std::vector<double> &SumPtPVvec, std::vector<int> &countPVvec, std::vector<double> &SumPtSVvec, std::vector<int> &countSVvec, UInt_t &Event_Nr, UInt_t &Run_Nr, Float_t &averageNumberOfInteractions, std::vector<double> &mu_pt, std::vector<double> &mu_eta, std::vector<double> &mu_phi, std::vector<double> &mu_IsolationParam_ptcone20, std::vector<int> &mu_charge, int &NumberOfVertices, std::vector<double> &jet_pt, std::vector<double> &jet_eta, std::vector<double> &jet_phi, TTree *tree, std::vector<double> &prim_track_pt, std::vector<double> &prim_track_eta, std::vector<double> &prim_track_phi,std::vector<double> &pile_track_pt,std::vector<double> &pile_track_eta, std::vector<double> &pile_track_phi,std::vector<TVector3> &alltracks,std::vector<double> &all_track_pt,	std::vector<double> &all_track_eta,	std::vector<double> &all_track_phi){
 
 	// Clear all variables if necessary (some are cleared at line 246-249)
 	NumberOfVertices = 0;
@@ -118,6 +129,16 @@ void StoreInTree(EWQuickEvent *event, std::vector<MainzCaloCell> vecCaloCells, s
 	pile_track_pt.clear();
 	pile_track_eta.clear();
 	pile_track_phi.clear();
+	all_track_pt.clear();
+	all_track_eta.clear();
+	all_track_phi.clear();
+	
+	//Store all track Information
+	for (unsigned int i =0;i<alltracks.size();i++){
+		all_track_pt.push_back(alltracks[i].Pt());
+		all_track_eta.push_back(alltracks[i].Eta());
+		all_track_phi.push_back(alltracks[i].Phi());
+	}
 	
 	// Store Content of vecCaloCells in 7 vectors
 	for (unsigned int i=0; i<vecCaloCells.size(); i++){
