@@ -18,6 +18,7 @@ std::vector<double> sumtrackpt(vector<double>* prim_track_pt,vector<double>* pil
 		pilept+=pile_track_pt->at(i);
 	}
 	
+		
 	std::vector<double> result;
 	result.push_back(primpt/1000);
 	result.push_back(pilept/1000);

@@ -101,6 +101,11 @@ int main(int argc, char *argv[]) {
 						hist.FillZHists(0,recoZ.Pt()/1000,recoZ.M()/1000,1);
 					}
 					vector<double> sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
+					///subtract the muons
+					for (int i=0;i<mu_pt->size();i++){
+						sumpt[0]-= sumpt[0]- mu_pt->at(i)/1000;
+						sumpt[2]-= sumpt[2]- mu_pt->at(i)/1000;
+	}
 					hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,cond);
 					isZ = false;
 				}

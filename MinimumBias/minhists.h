@@ -53,8 +53,7 @@ class Hists{
 			///Energy and PT Histograms
 			minb_mapHist1D["EoPT"] = new TH1F("E over PT","",100,0,100);
 			minb_mapHist1D["EmPT"] = new TH1F("E minus PT","",100,0,100);
-			
-			
+						
 			///Number of Muons, PTZ, M(Z)
 			minb_mapHist1D["nmu"] = new TH1F("Number of Muons","",20,0,20);
 			minb_mapHist1D["ptz"] = new TH1F("PT of Z","",100,0,100);
