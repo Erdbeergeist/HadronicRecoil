@@ -29,15 +29,61 @@ bool isPrimaryVertexTrack(float track_pt, float track_eta, float track_d0, float
 std::vector<TVector3> GetAllTracks(EWQuickEvent *event){
 	std::vector<TVector3> alltracks;
 	TVector3 tTrack;
+	
 	for (int i =0;i<event->trk_eta_atCalo2ndLayer->size();i++){
 		float track_pt = fabs(1.0/(event->trk_qoverp_wrtPV->at(i)) * sin(event->trk_theta_wrtPV->at(i)));
 		tTrack.SetPtEtaPhi(track_pt,event->trk_eta_atCalo2ndLayer->at(i),event->trk_phi_atCalo2ndLayer->at(i));
 		alltracks.push_back(tTrack);
+		
 	}
 	return alltracks;
 }
 
-void MainzCaloCellLoop(EWQuickEvent *event, TVector3 vecCell, std::vector<TVector3> &primtracks, std::vector<TVector3> &pileuptracks, std::vector<int> vecPosition, double &sumPtPV, double &sumPtSV, int &countPV, int &countSV) {
+std::vector<TVector3> GetAllPrimTracks(EWQuickEvent *event){
+	std::vector<TVector3> allprimtracks;
+	TVector3 tTrack;
+	
+	for (int i =0;i<event->trk_eta_atCalo2ndLayer->size();i++){
+		float track_pt = fabs(1.0/(event->trk_qoverp_wrtPV->at(i)) * sin(event->trk_theta_wrtPV->at(i)));
+		tTrack.SetPtEtaPhi(track_pt,event->trk_eta_atCalo2ndLayer->at(i),event->trk_phi_atCalo2ndLayer->at(i));
+		bool isPrim = isPrimaryVertexTrack(tTrack.Pt(), 
+						tTrack.Eta(), 
+						event->trk_d0->at(i), 
+						event->trk_z0->at(i) * sin(event->trk_theta_wrtPV->at(i)),
+						event->trk_nPix->at(i),
+						event->trk_SCT->at(i) );
+		if (isPrim==true) allprimtracks.push_back(tTrack);
+		
+	}
+	return allprimtracks;
+}
+
+std::vector<TVector3> GetAllPileTracks(EWQuickEvent *event){
+	std::vector<TVector3> allpiletracks;
+	TVector3 tTrack;
+	
+	for (int i =0;i<event->trk_eta_atCalo2ndLayer->size();i++){
+		float track_pt = fabs(1.0/(event->trk_qoverp_wrtPV->at(i)) * sin(event->trk_theta_wrtPV->at(i)));
+		tTrack.SetPtEtaPhi(track_pt,event->trk_eta_atCalo2ndLayer->at(i),event->trk_phi_atCalo2ndLayer->at(i));
+		bool isPrim = isPrimaryVertexTrack(tTrack.Pt(), 
+						tTrack.Eta(), 
+						event->trk_d0->at(i), 
+						event->trk_z0->at(i) * sin(event->trk_theta_wrtPV->at(i)),
+						event->trk_nPix->at(i),
+						event->trk_SCT->at(i) );
+		if (isPrim==false) allpiletracks.push_back(tTrack);
+		
+	}
+	return allpiletracks;
+}
+
+void MainzCaloCellLoop(EWQuickEvent *event,std::string id, TVector3 &tTracksave,TVector3 vecCell, std::vector<TVector3> &primtracks, std::vector<TVector3> &pileuptracks, std::vector<int> vecPosition, double &sumPtPV, double &sumPtSV, int &countPV, int &countSV) {
+	
+	ofstream logfile;
+	logfile.precision(20);
+	logfile.open("log.txt",std::ios::out | std::ios::app);
+	ofstream samefile;
+	samefile.open("same.txt",std::ios::out | std::ios::app);
 	
 	for (unsigned int k=0; k<vecPosition.size(); k++) {
 	
@@ -56,27 +102,34 @@ void MainzCaloCellLoop(EWQuickEvent *event, TVector3 vecCell, std::vector<TVecto
 						event->trk_z0->at(vecPosition[k]) * sin(event->trk_theta_wrtPV->at(vecPosition[k])),
 						event->trk_nPix->at(vecPosition[k]),
 						event->trk_SCT->at(vecPosition[k]) );
-
+			//if (tTrack.Pt()==5878.05) samefile <<tTrack.Pt() <<"\t" << tTracksave.Pt()<<"\t the k was "<< k << "\n";			
+			
+			tTracksave=tTrack;
 			if ( sqrt ( pow(tTrack.Eta()-vecCell.Eta(),2) + pow(tTrack.Phi()-vecCell.Phi(),2) ) < 0.1 ){		// associated
 		 		if (isPrim == true){
 		 			sumPtPV += vecCell.Pt();
 		 			countPV += 1;
+		 		//	logfile << "Prim: PT:"<<tTrack.Pt()<<"\t ETA: "<<tTrack.Eta()<<"\t PHI: "<<tTrack.Phi()<<"\n";//"k: "<<k<<"\n";//<<id<<"\n";
 		 			primtracks.push_back(tTrack);}
 		 			
 		 		else {
 		 			sumPtSV += vecCell.Pt();
 		 			countSV += 1;
+		 		//	logfile <<"Pile: PT:"<<tTrack.Pt()<<"\t ETA: "<<tTrack.Eta()<<"\t PHI: "<<tTrack.Phi()<<"\n";//"k: "<<k<<"\n";//<<id<<"\n";
 		 			pileuptracks.push_back(tTrack);}
 		 	}
+	
 		}
 	}
+	logfile.close();
+	samefile.close();
 }
 
 
 
 void categoriseTracks(EWQuickEvent *event, std::vector<int> &vecVLeft, std::vector<int> &vecLeft, std::vector<int> &vecMiddle, std::vector<int> &vecRight, std::vector<int> &vecVRight) {
 	// Tracks are stored in five eta-groups (by index)
-	// Boarders for usage:  -1.3 -0.45 0.45 1.3
+	// Borders for usage:  -1.3 -0.45 0.45 1.3
 	
 	for (int i=0; i<event->trk_eta->size(); i++) {
 	
@@ -97,7 +150,7 @@ void categoriseTracks(EWQuickEvent *event, std::vector<int> &vecVLeft, std::vect
 
 
 
-void StoreInTree(EWQuickEvent *event, std::vector<MainzCaloCell> vecCaloCells, std::vector<double> &vecCellsPt, std::vector<double> &vecCellsEta, std::vector<double> &vecCellsPhi, std::vector<double> &SumPtPVvec, std::vector<int> &countPVvec, std::vector<double> &SumPtSVvec, std::vector<int> &countSVvec, UInt_t &Event_Nr, UInt_t &Run_Nr, Float_t &averageNumberOfInteractions, std::vector<double> &mu_pt, std::vector<double> &mu_eta, std::vector<double> &mu_phi, std::vector<double> &mu_IsolationParam_ptcone20, std::vector<int> &mu_charge, int &NumberOfVertices, std::vector<double> &jet_pt, std::vector<double> &jet_eta, std::vector<double> &jet_phi, TTree *tree, std::vector<double> &prim_track_pt, std::vector<double> &prim_track_eta, std::vector<double> &prim_track_phi,std::vector<double> &pile_track_pt,std::vector<double> &pile_track_eta, std::vector<double> &pile_track_phi,std::vector<TVector3> &alltracks,std::vector<double> &all_track_pt,	std::vector<double> &all_track_eta,	std::vector<double> &all_track_phi){
+void StoreInTree(EWQuickEvent *event, std::vector<MainzCaloCell> vecCaloCells, std::vector<double> &vecCellsPt, std::vector<double> &vecCellsEta, std::vector<double> &vecCellsPhi, std::vector<double> &SumPtPVvec, std::vector<int> &countPVvec, std::vector<double> &SumPtSVvec, std::vector<int> &countSVvec, UInt_t &Event_Nr, UInt_t &Run_Nr, Float_t &averageNumberOfInteractions, std::vector<double> &mu_pt, std::vector<double> &mu_eta, std::vector<double> &mu_phi, std::vector<double> &mu_IsolationParam_ptcone20, std::vector<int> &mu_charge, int &NumberOfVertices, std::vector<double> &jet_pt, std::vector<double> &jet_eta, std::vector<double> &jet_phi, TTree *tree, std::vector<double> &prim_track_pt, std::vector<double> &prim_track_eta, std::vector<double> &prim_track_phi,std::vector<double> &pile_track_pt,std::vector<double> &pile_track_eta, std::vector<double> &pile_track_phi,std::vector<TVector3> &alltracks,std::vector<double> &all_track_pt,	std::vector<double> &all_track_eta,	std::vector<double> &all_track_phi,std::vector<double> &noA_track_pt,std::vector<double> &noA_track_eta,std::vector<double> &noA_track_phi,std::vector<TVector3> &allprimtracks,std::vector<double> &all_prim_track_pt,	std::vector<double> &all_prim_track_eta,std::vector<double> &all_prim_track_phi,std::vector<TVector3> &allpiletracks,std::vector<double> &all_pile_track_pt,	std::vector<double> &all_pile_track_eta,	std::vector<double> &all_pile_track_phi){
 
 	// Clear all variables if necessary (some are cleared at line 246-249)
 	NumberOfVertices = 0;
@@ -132,6 +185,15 @@ void StoreInTree(EWQuickEvent *event, std::vector<MainzCaloCell> vecCaloCells, s
 	all_track_pt.clear();
 	all_track_eta.clear();
 	all_track_phi.clear();
+	all_prim_track_pt.clear();
+	all_prim_track_eta.clear();
+	all_prim_track_phi.clear();
+	all_pile_track_pt.clear();
+	all_pile_track_eta.clear();
+	all_pile_track_phi.clear();
+	noA_track_pt.clear();
+	noA_track_eta.clear();
+	noA_track_phi.clear();
 	
 	//Store all track Information
 	for (unsigned int i =0;i<alltracks.size();i++){
@@ -139,6 +201,23 @@ void StoreInTree(EWQuickEvent *event, std::vector<MainzCaloCell> vecCaloCells, s
 		all_track_eta.push_back(alltracks[i].Eta());
 		all_track_phi.push_back(alltracks[i].Phi());
 	}
+	for (unsigned int i =0;i<allprimtracks.size();i++){
+		all_prim_track_pt.push_back(allprimtracks[i].Pt());
+		all_prim_track_eta.push_back(allprimtracks[i].Eta());
+		all_prim_track_phi.push_back(allprimtracks[i].Phi());
+	}
+	for (unsigned int i =0;i<allpiletracks.size();i++){
+		all_pile_track_pt.push_back(allpiletracks[i].Pt());
+		all_pile_track_eta.push_back(allpiletracks[i].Eta());
+		all_pile_track_phi.push_back(allpiletracks[i].Phi());
+	}
+	
+	//Store not associated track Information
+	//for (unsigned int i =0;i<noA_track_pt.size();i++){
+	//	noA_track_pt.push_back(noA_track_pt[i]);
+	//	noA_track_eta.push_back(noA_track_eta[i]);
+	//	noA_track_phi.push_back(noA_track_phi[i]);
+	//}
 	
 	// Store Content of vecCaloCells in 7 vectors
 	for (unsigned int i=0; i<vecCaloCells.size(); i++){
@@ -216,7 +295,7 @@ void FillMainzCaloCellVector(EWQuickEvent *event, std::vector<MainzCaloCell> &ve
 
 	
 	categoriseTracks(event,vecVLeft,vecLeft,vecMiddle,vecRight,vecVRight);//#LM split tracks according to eta
-	
+	TVector3 tTracksave;
 	//Cluster-Loop
 	//For each Cluster one MainzCaloCell
 	for (unsigned int j=0; j<event->cl_lc_n; j++) {	//#LM a cluster is one cell of the detector ?, cl_lc_n = cluster number ?
@@ -232,19 +311,19 @@ void FillMainzCaloCellVector(EWQuickEvent *event, std::vector<MainzCaloCell> &ve
 
 		// Association-Loops
 		if (newCell.vecCell.Eta() < -1.3){
-			MainzCaloCellLoop(event, newCell.vecCell,newCell.primtracks,newCell.pileuptracks, vecVLeft, newCell.sumPtOfAssociatedPrimaryTracks, newCell.sumPtOfAssociatedPileUpVertexTracks, newCell.numberOfAssociatedPrimaryTracks, newCell.numberOfAssociatedPileUpVertexTracks);
+			MainzCaloCellLoop(event,"vleft",tTracksave, newCell.vecCell,newCell.primtracks,newCell.pileuptracks, vecVLeft, newCell.sumPtOfAssociatedPrimaryTracks, newCell.sumPtOfAssociatedPileUpVertexTracks, newCell.numberOfAssociatedPrimaryTracks, newCell.numberOfAssociatedPileUpVertexTracks);
 		}
 		if (newCell.vecCell.Eta() >= -1.3 && newCell.vecCell.Eta() < -0.45){
-			MainzCaloCellLoop(event, newCell.vecCell,newCell.primtracks,newCell.pileuptracks, vecLeft, newCell.sumPtOfAssociatedPrimaryTracks, newCell.sumPtOfAssociatedPileUpVertexTracks, newCell.numberOfAssociatedPrimaryTracks, newCell.numberOfAssociatedPileUpVertexTracks);
+			MainzCaloCellLoop(event,"left",tTracksave, newCell.vecCell,newCell.primtracks,newCell.pileuptracks, vecLeft, newCell.sumPtOfAssociatedPrimaryTracks, newCell.sumPtOfAssociatedPileUpVertexTracks, newCell.numberOfAssociatedPrimaryTracks, newCell.numberOfAssociatedPileUpVertexTracks);
 		}
 		if (newCell.vecCell.Eta() >= -0.45 && newCell.vecCell.Eta() < 0.45){
-			MainzCaloCellLoop(event, newCell.vecCell,newCell.primtracks, newCell.pileuptracks,vecMiddle, newCell.sumPtOfAssociatedPrimaryTracks, newCell.sumPtOfAssociatedPileUpVertexTracks, newCell.numberOfAssociatedPrimaryTracks, newCell.numberOfAssociatedPileUpVertexTracks);
+			MainzCaloCellLoop(event,"middle", tTracksave,newCell.vecCell,newCell.primtracks, newCell.pileuptracks,vecMiddle, newCell.sumPtOfAssociatedPrimaryTracks, newCell.sumPtOfAssociatedPileUpVertexTracks, newCell.numberOfAssociatedPrimaryTracks, newCell.numberOfAssociatedPileUpVertexTracks);
 		}
 		if (newCell.vecCell.Eta() >= 0.45 && newCell.vecCell.Eta() < 1.3){
-			MainzCaloCellLoop(event, newCell.vecCell,newCell.primtracks, newCell.pileuptracks,vecRight, newCell.sumPtOfAssociatedPrimaryTracks, newCell.sumPtOfAssociatedPileUpVertexTracks, newCell.numberOfAssociatedPrimaryTracks, newCell.numberOfAssociatedPileUpVertexTracks);
+			MainzCaloCellLoop(event, "right",tTracksave,newCell.vecCell,newCell.primtracks, newCell.pileuptracks,vecRight, newCell.sumPtOfAssociatedPrimaryTracks, newCell.sumPtOfAssociatedPileUpVertexTracks, newCell.numberOfAssociatedPrimaryTracks, newCell.numberOfAssociatedPileUpVertexTracks);
 		}
 		if (newCell.vecCell.Eta() >= 1.3){
-			MainzCaloCellLoop(event, newCell.vecCell,newCell.primtracks, newCell.pileuptracks,vecVRight, newCell.sumPtOfAssociatedPrimaryTracks, newCell.sumPtOfAssociatedPileUpVertexTracks, newCell.numberOfAssociatedPrimaryTracks, newCell.numberOfAssociatedPileUpVertexTracks);
+			MainzCaloCellLoop(event,"vright", tTracksave,newCell.vecCell,newCell.primtracks, newCell.pileuptracks,vecVRight, newCell.sumPtOfAssociatedPrimaryTracks, newCell.sumPtOfAssociatedPileUpVertexTracks, newCell.numberOfAssociatedPrimaryTracks, newCell.numberOfAssociatedPileUpVertexTracks);
 		}
 		
 		//std::cout<<newCell.pileuptracks.size()<<std::endl;
