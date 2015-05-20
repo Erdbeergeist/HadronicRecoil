@@ -100,12 +100,15 @@ int main(int argc, char *argv[]) {
 						hist.Fill2DZHists(recoZ,NumberOfVertices,hadrec);
 						hist.FillZHists(0,recoZ.Pt()/1000,recoZ.M()/1000,1);
 					}
-					vector<double> sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
+					vector<double> sumpt = sumtrackpt(all_prim_track_pt,all_pile_track_pt,all_track_pt);
+					//cout<<sumpt[0]<<"\t"<<mu_pt->at(0)/1000<<"\t"<<mu_pt->at(1)/1000<<"\t"<<mu_pt->at(0)/1000 + mu_pt->at(1)/1000<<endl;
+					
 					///subtract the muons
 					for (int i=0;i<mu_pt->size();i++){
 						sumpt[0]-= sumpt[0]- mu_pt->at(i)/1000;
 						sumpt[2]-= sumpt[2]- mu_pt->at(i)/1000;
-	}
+						}
+						
 					hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,cond);
 					isZ = false;
 				}

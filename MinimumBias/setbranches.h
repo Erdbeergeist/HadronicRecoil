@@ -25,6 +25,9 @@
 	std::vector<double>* 		pile_track_pt=0;
 	std::vector<double>* 		pile_track_eta=0;
 	std::vector<double>* 		pile_track_phi=0;
+	std::vector<double>* 		all_track_pt=0;
+	std::vector<double>* 		all_prim_track_pt=0;
+	std::vector<double>* 		all_pile_track_pt=0;
 
 	void setbranches(TTree *tree){
 	tree->SetBranchAddress("Mainz_CellPt", &vecCellsPt); //vec.Pt()
@@ -52,6 +55,10 @@
 	tree->SetBranchAddress("pile_track_pt",&pile_track_pt);
 	tree->SetBranchAddress("pile_track_eta",&pile_track_eta);
 	tree->SetBranchAddress("pile_track_phi",&pile_track_phi);
+	tree->SetBranchAddress("all_track_pt",&all_track_pt);
+	tree->SetBranchAddress("all_prim_track_pt",&all_prim_track_pt);
+	tree->SetBranchAddress("all_pile_track_pt",&all_pile_track_pt);
+	
 	/// --- END ---
 	
 }	
