@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iomanip>
 #include <sstream>
+
 /// Global Variables
 EWQuickEvent 							*m_event;
 std::map<std::string, TH1F*>			mapHist1D;
@@ -113,10 +114,10 @@ int main(int argc, char *argv[]) {
 
 		FillMainzCaloCellVector(m_event, vecCaloCells);
 		
-		std::vector<TVector3> alltracks = GetAllTracks(m_event);
-		std::vector<TVector3> allprimtracks = GetAllPrimTracks(m_event);
-		std::vector<TVector3> allpiletracks = GetAllPileTracks(m_event);
-
+		std::vector<TVector3> alltracks, allprimtracks,allpiletracks;
+		
+		GetAllTracks(m_event,&alltracks,&allprimtracks,&allpiletracks);
+		
 		// Store vector in five Branches of MCCtree
 		StoreInTree(m_event, vecCaloCells, vecCellsPt, vecCellsEta, vecCellsPhi, SumPtPVvec, countPVvec, SumPtSVvec, countSVvec, Event_Nr, Run_Nr, averageNumberOfInteractions, mu_pt, mu_eta, mu_phi, mu_IsolationParam_ptcone20, mu_charge, NumberOfVertices, jet_pt, jet_eta, jet_phi, MCCtree,prim_track_pt,prim_track_eta,prim_track_phi,pile_track_pt,pile_track_eta,pile_track_phi,alltracks,all_track_pt,all_track_eta,all_track_phi,noA_track_pt,noA_track_eta,noA_track_phi,allprimtracks,all_prim_track_pt,all_prim_track_eta,all_prim_track_phi,allpiletracks,all_pile_track_pt,all_pile_track_phi,all_pile_track_phi);
 		

@@ -26,25 +26,14 @@ bool isPrimaryVertexTrack(float track_pt, float track_eta, float track_d0, float
 	        return false;
 	    } //end of isPrimaryVertexTrack
 
-std::vector<TVector3> GetAllTracks(EWQuickEvent *event){
-	std::vector<TVector3> alltracks;
+void GetAllTracks(EWQuickEvent *event,std::vector<TVector3>* alltracks, std::vector<TVector3>* allprimtracks, std::vector<TVector3>* allpiletracks){
+	
 	TVector3 tTrack;
 	
 	for (int i =0;i<event->trk_eta_atCalo2ndLayer->size();i++){
 		float track_pt = fabs(1.0/(event->trk_qoverp_wrtPV->at(i)) * sin(event->trk_theta_wrtPV->at(i)));
 		tTrack.SetPtEtaPhi(track_pt,event->trk_eta_atCalo2ndLayer->at(i),event->trk_phi_atCalo2ndLayer->at(i));
-		alltracks.push_back(tTrack);
 		
-	}
-	return alltracks;
-}
-
-std::vector<TVector3> GetAllPrimTracks(EWQuickEvent *event){
-	std::vector<TVector3> allprimtracks;
-	TVector3 tTrack;
-	
-	for (int i =0;i<event->trk_eta_atCalo2ndLayer->size();i++){
-		float track_pt = fabs(1.0/(event->trk_qoverp_wrtPV->at(i)) * sin(event->trk_theta_wrtPV->at(i)));
 		tTrack.SetPtEtaPhi(track_pt,event->trk_eta_atCalo2ndLayer->at(i),event->trk_phi_atCalo2ndLayer->at(i));
 		bool isPrim = isPrimaryVertexTrack(tTrack.Pt(), 
 						tTrack.Eta(), 
@@ -52,30 +41,15 @@ std::vector<TVector3> GetAllPrimTracks(EWQuickEvent *event){
 						event->trk_z0->at(i) * sin(event->trk_theta_wrtPV->at(i)),
 						event->trk_nPix->at(i),
 						event->trk_SCT->at(i) );
-		if (isPrim==true) allprimtracks.push_back(tTrack);
+		if (isPrim==true) allprimtracks->push_back(tTrack);
+		if (isPrim==false) allpiletracks->push_back(tTrack);
+		alltracks->push_back(tTrack);
 		
 	}
-	return allprimtracks;
+	
 }
 
-std::vector<TVector3> GetAllPileTracks(EWQuickEvent *event){
-	std::vector<TVector3> allpiletracks;
-	TVector3 tTrack;
-	
-	for (int i =0;i<event->trk_eta_atCalo2ndLayer->size();i++){
-		float track_pt = fabs(1.0/(event->trk_qoverp_wrtPV->at(i)) * sin(event->trk_theta_wrtPV->at(i)));
-		tTrack.SetPtEtaPhi(track_pt,event->trk_eta_atCalo2ndLayer->at(i),event->trk_phi_atCalo2ndLayer->at(i));
-		bool isPrim = isPrimaryVertexTrack(tTrack.Pt(), 
-						tTrack.Eta(), 
-						event->trk_d0->at(i), 
-						event->trk_z0->at(i) * sin(event->trk_theta_wrtPV->at(i)),
-						event->trk_nPix->at(i),
-						event->trk_SCT->at(i) );
-		if (isPrim==false) allpiletracks.push_back(tTrack);
-		
-	}
-	return allpiletracks;
-}
+
 
 void MainzCaloCellLoop(EWQuickEvent *event,std::string id, TVector3 &tTracksave,TVector3 vecCell, std::vector<TVector3> &primtracks, std::vector<TVector3> &pileuptracks, std::vector<int> vecPosition, double &sumPtPV, double &sumPtSV, int &countPV, int &countSV) {
 	

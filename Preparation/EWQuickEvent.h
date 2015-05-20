@@ -33,7 +33,7 @@ class EWQuickEvent {
 		}
 
 		void cleanVariables() {
-		   trk_pt = 0;
+		    trk_pt = 0;
 			trk_eta = 0;
 			trk_phi = 0;
 			trk_d0 = 0;
