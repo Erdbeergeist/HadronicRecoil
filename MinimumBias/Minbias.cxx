@@ -105,10 +105,12 @@ int main(int argc, char *argv[]) {
 					
 					///subtract the muons
 					for (int i=0;i<mu_pt->size();i++){
-						sumpt[0]-= sumpt[0]- mu_pt->at(i)/1000;
-						sumpt[2]-= sumpt[2]- mu_pt->at(i)/1000;
-						}
+						cout<<mu_pt->at(i)/1000<<"\t ++++ "<<sumpt[0]<<"\n";
+						sumpt[0] = sumpt[0]- mu_pt->at(i)/1000;
+						sumpt[2] = sumpt[2]- mu_pt->at(i)/1000;
 						
+						}
+					cout<<sumpt[0]<<"\n";	
 					hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,cond);
 					isZ = false;
 				}
