@@ -7,18 +7,18 @@
 std::vector<double> sumtrackpt(vector<double>* prim_track_pt,vector<double>* pile_track_pt,vector<double>* all_track_pt=0){
 	
 	double sumpt=0,primpt=0,pilept=0;
-	for (int i=0;i<all_track_pt->size();i++){
-		sumpt+=all_track_pt->at(i);
-	}
+	//for (int i=0;i<all_track_pt->size();i++){
+		//sumpt+=all_track_pt->at(i);
+	//}
 	
 	for (int i =0;i<prim_track_pt->size();i++){
-		//sumpt+=prim_track_pt->at(i);
+		sumpt+=prim_track_pt->at(i);
 		primpt+=prim_track_pt->at(i);
 		
 	}
 	
 	for (int i=0;i<pile_track_pt->size();i++){
-		//sumpt+=pile_track_pt->at(i);
+		sumpt+=pile_track_pt->at(i);
 		pilept+=pile_track_pt->at(i);
 	}
 	
