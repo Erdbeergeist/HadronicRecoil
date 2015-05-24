@@ -36,9 +36,12 @@ int main(int argc, char *argv[]) {
 	std::vector<double> pile_track_pt;
 	std::vector<double> pile_track_eta;
 	std::vector<double> pile_track_phi;
-	std::vector<double> noA_track_pt;
-	std::vector<double> noA_track_eta;
-	std::vector<double> noA_track_phi;
+	std::vector<double> noaC_prim_track_pt;
+	std::vector<double> noaC_prim_track_eta;
+	std::vector<double> noaC_prim_track_phi;
+	std::vector<double> noaC_pile_track_pt;
+	std::vector<double> noaC_pile_track_eta;
+	std::vector<double> noaC_pile_track_phi;
 	std::vector<double> vecCellsPt; 
 	std::vector<double> vecCellsEta;
 	std::vector<double> vecCellsPhi;
@@ -86,9 +89,6 @@ int main(int argc, char *argv[]) {
 	MCCtree->Branch("pile_track_pt",&pile_track_pt);
 	MCCtree->Branch("pile_track_eta",&pile_track_eta);
 	MCCtree->Branch("pile_track_phi",&pile_track_phi);
-	MCCtree->Branch("noA_track_pt",&noA_track_pt);
-	MCCtree->Branch("noA_track_eta",&noA_track_eta);
-	MCCtree->Branch("noA_track_phi",&noA_track_phi);
 	MCCtree->Branch("all_track_pt",&all_track_pt);
 	MCCtree->Branch("all_track_eta",&all_track_eta);
 	MCCtree->Branch("all_track_phi",&all_track_phi);
@@ -98,6 +98,13 @@ int main(int argc, char *argv[]) {
 	MCCtree->Branch("all_pile_track_pt",&all_pile_track_pt);
 	MCCtree->Branch("all_pile_track_eta",&all_pile_track_eta);
 	MCCtree->Branch("all_pile_track_phi",&all_pile_track_phi);
+	MCCtree->Branch("noaC_prim_track_pt",&noaC_prim_track_pt);
+	MCCtree->Branch("noaC_prim_track_eta",&noaC_prim_track_eta);
+	MCCtree->Branch("noaC_prim_track_phi",&noaC_prim_track_phi);
+	MCCtree->Branch("noaC_pile_track_pt",&noaC_pile_track_pt);
+	MCCtree->Branch("noaC_pile_track_eta",&noaC_pile_track_eta);
+	MCCtree->Branch("noaC_pile_track_phi",&noaC_pile_track_phi);
+	
 	
 	std::vector<std::string> vec_Filenames;
 	vec_Filenames.push_back(filename.c_str());
@@ -111,15 +118,16 @@ int main(int argc, char *argv[]) {
 		
 		// One vector per event with all information
 		std::vector<MainzCaloCell> vecCaloCells;
+		std::vector<TVector3> alltracks, allprimtracks,allpiletracks,noaCpiletracks, noaCprimtracks;
 
-		FillMainzCaloCellVector(m_event, vecCaloCells);
+		FillMainzCaloCellVector(m_event, vecCaloCells,&noaCprimtracks,&noaCpiletracks);
 		
-		std::vector<TVector3> alltracks, allprimtracks,allpiletracks;
+		
 		
 		GetAllTracks(m_event,&alltracks,&allprimtracks,&allpiletracks);
 		
 		// Store vector in five Branches of MCCtree
-		StoreInTree(m_event, vecCaloCells, vecCellsPt, vecCellsEta, vecCellsPhi, SumPtPVvec, countPVvec, SumPtSVvec, countSVvec, Event_Nr, Run_Nr, averageNumberOfInteractions, mu_pt, mu_eta, mu_phi, mu_IsolationParam_ptcone20, mu_charge, NumberOfVertices, jet_pt, jet_eta, jet_phi, MCCtree,prim_track_pt,prim_track_eta,prim_track_phi,pile_track_pt,pile_track_eta,pile_track_phi,alltracks,all_track_pt,all_track_eta,all_track_phi,noA_track_pt,noA_track_eta,noA_track_phi,allprimtracks,all_prim_track_pt,all_prim_track_eta,all_prim_track_phi,allpiletracks,all_pile_track_pt,all_pile_track_phi,all_pile_track_phi);
+		StoreInTree(m_event, vecCaloCells, vecCellsPt, vecCellsEta, vecCellsPhi, SumPtPVvec, countPVvec, SumPtSVvec, countSVvec, Event_Nr, Run_Nr, averageNumberOfInteractions, mu_pt, mu_eta, mu_phi, mu_IsolationParam_ptcone20, mu_charge, NumberOfVertices, jet_pt, jet_eta, jet_phi, MCCtree,prim_track_pt,prim_track_eta,prim_track_phi,pile_track_pt,pile_track_eta,pile_track_phi,alltracks,all_track_pt,all_track_eta,all_track_phi,allprimtracks,all_prim_track_pt,all_prim_track_eta,all_prim_track_phi,allpiletracks,all_pile_track_pt,all_pile_track_phi,all_pile_track_phi,noaCprimtracks,noaC_prim_track_pt,noaC_prim_track_eta,noaC_prim_track_phi,noaCpiletracks,noaC_pile_track_pt,noaC_pile_track_eta,noaC_pile_track_phi);
 		
 				
 	}
