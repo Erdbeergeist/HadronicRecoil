@@ -76,8 +76,11 @@ class Hists{
 			
 			///#Various vs ZPT
 			minb_mapHist2D["EtavZPT"] = new TH2F("Eta vs ZPT","",100,0,100,100,-2.5,2.5);
+			minb_mapHist2D["HadrecvSumPtprim"] = new TH2F("Hadrec vs SumPt prim","",100,0,100,100,0,100);
+			minb_mapHist2D["HadrecvZPt"] = new TH2F("Hadrec vs Zpt","",100,0,100,100,0,100);
+			minb_mapHist2D["HadrecvSumPtpile"] = new TH2F("Hadrec vs SumPt pile","",100,0,100,100,0,100);
 			minb_mapHist2D["NVvZPT"] = new TH2F("Number of Vertices vs ZPT","",100,0,100,30,0,30);
-			minb_mapHist2D["PTTvZPT"] = new TH2F("Track PT vs ZPT","",100,0,100,100,0,100);
+			minb_mapHist2D["PTTvZPT"] = new TH2F("Hadrec PT vs ZPT","",100,0,100,100,0,100);
 			
 		}
 		///Fill the Historgrams
@@ -192,9 +195,11 @@ class Hists{
 			}
 		}
 		///Fill the Hadronic Recoil Histograms
-		void FillHadrecHists(TVector3 hadrec){
+		void FillHadrecHists(TVector3 hadrec,vector<double> sumpt,double Zpt){
 			minb_mapHist1D["HadPhi"]->Fill(hadrec.Phi());
 			minb_mapHist1D["HadEta"]->Fill(hadrec.Eta());
+			minb_mapHist2D["HadrecvSumPtprim"]-> Fill(sumpt[0],hadrec.Pt()/1000);
+			minb_mapHist2D["HadrecvSumPtpile"]->Fill(sumpt[1],hadrec.Pt()/1000);
 		}
 		///Write the Histogramms to file
 		void WriteFile(TFile *fileO){

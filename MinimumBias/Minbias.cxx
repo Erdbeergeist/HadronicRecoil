@@ -92,25 +92,27 @@ int main(int argc, char *argv[]) {
 					mu2.SetPtEtaPhi(mu_pt->at(1),mu_eta->at(1),mu_phi->at(1));
 					Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
 					
-					
-					///Hadronic Recoil calculated by adding up everything but muons
-					hadrec = calcHadronicRecoil(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2);
-					hist.FillHadrecHists(hadrec);
-					if (cond == 0) {
-						hist.Fill2DZHists(recoZ,NumberOfVertices,hadrec);
-						hist.FillZHists(0,recoZ.Pt()/1000,recoZ.M()/1000,1);
-					}
+									
 					vector<double> sumpt = sumtrackpt(prim_track_pt,pile_track_pt,all_track_pt);
 					//cout<<sumpt[0]<<"\t"<<mu_pt->at(0)/1000<<"\t"<<mu_pt->at(1)/1000<<"\t"<<mu_pt->at(0)/1000 + mu_pt->at(1)/1000<<endl;
 					
 					///subtract the muons
 					for (int i=0;i<mu_pt->size();i++){
-						cout<<mu_pt->at(i)/1000<<"\t ++++ "<<sumpt[0]<<"\n";
+						//cout<<mu_pt->at(i)/1000<<"\t ++++ "<<sumpt[0]<<"\n";
 						sumpt[0] = sumpt[0]- mu_pt->at(i)/1000;
 						sumpt[2] = sumpt[2]- mu_pt->at(i)/1000;
 						
 						}
-					cout<<sumpt[0]<<"\n";	
+					//cout<<sumpt[0]<<"\n";	
+					
+					if (cond == 0) {
+						///Hadronic Recoil calculated by adding up everything but muons
+						hadrec = calcHadronicRecoil(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2);
+						hist.FillHadrecHists(hadrec,sumpt,Zvec.Pt());
+						hist.Fill2DZHists(recoZ,NumberOfVertices,hadrec);
+						hist.FillZHists(0,recoZ.Pt()/1000,recoZ.M()/1000,1);
+					}
+					
 					hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,cond);
 					isZ = false;
 				}
