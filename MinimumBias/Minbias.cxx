@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 					Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
 					
 									
-					vector<double> sumpt = sumtrackpt(prim_track_pt,pile_track_pt,all_track_pt);
+					vector<double> sumpt = sumtrackpt(all_prim_track_pt,all_pile_track_pt,all_track_pt);
 					//cout<<sumpt[0]<<"\t"<<mu_pt->at(0)/1000<<"\t"<<mu_pt->at(1)/1000<<"\t"<<mu_pt->at(0)/1000 + mu_pt->at(1)/1000<<endl;
 					
 					///subtract the muons
