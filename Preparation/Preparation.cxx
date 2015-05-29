@@ -111,23 +111,21 @@ int main(int argc, char *argv[]) {
 
 	m_event = new EWQuickEvent(vec_Filenames, "physics");
 	
-	
-	/// Loop over all Events
-	//m_event->m_actEventNumber = 3000; //#LM y 3000 ?
 	while (m_event->getNextEvent()) {
 		
-		// One vector per event with all information
+		
 		std::vector<MainzCaloCell> vecCaloCells;
-		std::vector<TVector3> alltracks, allprimtracks,allpiletracks,noaCpiletracks, noaCprimtracks;
-
+		std::vector<TVector3> alltracks,allprimtracks,allpiletracks,noaCpiletracks,noaCprimtracks;
+		
+		
 		FillMainzCaloCellVector(m_event, vecCaloCells,&noaCprimtracks,&noaCpiletracks);
 		
 		
-		
+		//Save ALL Tracks
 		GetAllTracks(m_event,&alltracks,&allprimtracks,&allpiletracks);
 		
 		// Store vector in five Branches of MCCtree
-		StoreInTree(m_event, vecCaloCells, vecCellsPt, vecCellsEta, vecCellsPhi, SumPtPVvec, countPVvec, SumPtSVvec, countSVvec, Event_Nr, Run_Nr, averageNumberOfInteractions, mu_pt, mu_eta, mu_phi, mu_IsolationParam_ptcone20, mu_charge, NumberOfVertices, jet_pt, jet_eta, jet_phi, MCCtree,prim_track_pt,prim_track_eta,prim_track_phi,pile_track_pt,pile_track_eta,pile_track_phi,alltracks,all_track_pt,all_track_eta,all_track_phi,allprimtracks,all_prim_track_pt,all_prim_track_eta,all_prim_track_phi,allpiletracks,all_pile_track_pt,all_pile_track_phi,all_pile_track_phi,noaCprimtracks,noaC_prim_track_pt,noaC_prim_track_eta,noaC_prim_track_phi,noaCpiletracks,noaC_pile_track_pt,noaC_pile_track_eta,noaC_pile_track_phi);
+		StoreInTree(m_event, vecCaloCells, vecCellsPt, vecCellsEta, vecCellsPhi, SumPtPVvec, countPVvec, SumPtSVvec, countSVvec, Event_Nr, Run_Nr, averageNumberOfInteractions, mu_pt, mu_eta, mu_phi, mu_IsolationParam_ptcone20, mu_charge, NumberOfVertices, jet_pt, jet_eta, jet_phi, MCCtree,prim_track_pt,prim_track_eta,prim_track_phi,pile_track_pt,pile_track_eta,pile_track_phi,alltracks,all_track_pt,all_track_eta,all_track_phi,allprimtracks,all_prim_track_pt,all_prim_track_eta,all_prim_track_phi,allpiletracks,all_pile_track_pt,all_pile_track_eta,all_pile_track_phi,noaCprimtracks,noaC_prim_track_pt,noaC_prim_track_eta,noaC_prim_track_phi,noaCpiletracks,noaC_pile_track_pt,noaC_pile_track_eta,noaC_pile_track_phi);
 		
 				
 	}
