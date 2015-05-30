@@ -30,6 +30,44 @@ std::vector<double> sumtrackpt(vector<double>* prim_track_pt,vector<double>* pil
 	return result;
 }
 
+///Sum up the track_pt for BOTH primary and pileup tracks
+///			--- result contains ---
+///			--- result[0] contains sum PT of primary tracks ---
+///			--- result[1] contains sum PT of pile up tracks ---
+///			--- result[2] contains the TOTAL PT of pileup and primary tracks ---
+std::vector<double> vecsumtrackpt(vector<double>* prim_track_pt,vector<double>* prim_track_eta,vector<double>* prim_track_phi, vector<double>* pile_track_pt,vector<double>* pile_track_eta,vector<double>* pile_track_phi,vector<double>* all_track_pt=0,vector<double>* all_track_eta=0,vector<double>* all_track_phi = 0,vector<double>* mu_pt=0,vector<double>* mu_eta=0,vector<double>* mu_phi = 0){
+	
+	TVector3 sum,prim,pile,vec;
+	//for (int i=0;i<all_track_pt->size();i++){
+		//sumpt+=all_track_pt->at(i);
+	//}
+	cout<<"1\n";
+	for (int i =0;i<prim_track_pt->size();i++){
+		vec.SetPtEtaPhi(prim_track_pt->at(i),prim_track_eta->at(i),prim_track_phi->at(i));
+		sum+=vec;
+		prim+=vec;
+	}
+	cout<<"2\n";
+	for (int i=0;i<pile_track_pt->size();i++){
+		vec.SetPtEtaPhi(pile_track_pt->at(i),pile_track_eta->at(i),pile_track_phi->at(i));
+		sum+=vec;
+		pile+=vec;
+	}
+	cout<<"3\n";
+	for (int i =0;i<mu_pt->size();i++){
+		vec.SetPtEtaPhi(mu_pt->at(i),mu_eta->at(i),mu_phi->at(i));
+		sum= sum -vec;
+		prim= prim - vec;
+		
+	}
+	
+	std::vector<double> result;
+	result.push_back(prim.Pt()/1000);
+	result.push_back(pile.Pt()/1000);
+	result.push_back(sum.Pt()/1000);
+	return result;
+}
+
 ///Check if an event has atleast one track within the ptthreshholds
 //			--- opt = 0 at least one greater than ptthresh --- 
 //			--- opt = 1 NO track greater ptthresh ---

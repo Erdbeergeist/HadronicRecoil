@@ -92,18 +92,19 @@ int main(int argc, char *argv[]) {
 					mu2.SetPtEtaPhi(mu_pt->at(1),mu_eta->at(1),mu_phi->at(1));
 					Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
 					
-									
+					///Contains ALL Tracks (also Tracks that have not been associated)
 					vector<double> sumpt = sumtrackpt(all_prim_track_pt,all_pile_track_pt,all_track_pt);
-					//cout<<sumpt[0]<<"\t"<<mu_pt->at(0)/1000<<"\t"<<mu_pt->at(1)/1000<<"\t"<<mu_pt->at(0)/1000 + mu_pt->at(1)/1000<<endl;
+					vector<double> vecsumpt = vecsumtrackpt(all_prim_track_pt,all_prim_track_eta,all_prim_track_phi,all_pile_track_pt,all_pile_track_eta,all_pile_track_phi,all_track_pt,all_track_eta,all_track_phi,mu_pt,mu_eta,mu_phi);
 					
 					///subtract the muons
 					for (int i=0;i<mu_pt->size();i++){
-						//cout<<mu_pt->at(i)/1000<<"\t ++++ "<<sumpt[0]<<"\n";
+					
 						sumpt[0] = sumpt[0]- mu_pt->at(i)/1000;
+						sumpt[1] = sumpt[1]- mu_pt->at(i)/1000;
 						sumpt[2] = sumpt[2]- mu_pt->at(i)/1000;
 						
-						}
-					//cout<<sumpt[0]<<"\n";	
+					}
+					
 					
 					if (cond == 0) {
 						///Hadronic Recoil calculated by adding up everything but muons
@@ -111,6 +112,7 @@ int main(int argc, char *argv[]) {
 						hist.FillHadrecHists(hadrec,sumpt,Zvec.Pt());
 						hist.Fill2DZHists(recoZ,NumberOfVertices,hadrec);
 						hist.FillZHists(0,recoZ.Pt()/1000,recoZ.M()/1000,1);
+						hist.FillVecSum(hadrec,vecsumpt,Zvec);
 					}
 					
 					hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,cond);
