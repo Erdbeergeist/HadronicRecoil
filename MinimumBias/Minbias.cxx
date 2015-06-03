@@ -126,42 +126,10 @@ int main(int argc, char *argv[]) {
 			vector<double> sumpt;
 			TLorentzVector recoZ;
 			isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax,&hist);
-			for (int i =0;i < 1;i++){
-				switch (i) {
-					case 0:
-						/// No Condition
-						sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
-						hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,0);
-						break;
-					case 1:
-						///Mean Track PT lower than 20 GeV (pileup & primary)
-						if (checktrackpt(prim_track_pt,pile_track_pt,20000,2) == true) {
-							sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
-							hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,i);
-							break;
-						}
-					case 2:
-						///Mean Track PT lower than 10 GeV (pileup & primary)
-						if (checktrackpt(prim_track_pt,pile_track_pt,10000,2) == true) {
-							sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
-							hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,i);
-							break;
-						}	
-					case 3:
-						///Mean Track PT lower than 5 GeV (pileup & primary)
-						if (checktrackpt(prim_track_pt,pile_track_pt,5000,2) == true) {
-							sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
-							hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,i);
-							break;
-						}		
-					case 4:
-						///Mean Track PT lowerthan 2 GeV (pileup & primary)
-						if (checktrackpt(prim_track_pt,pile_track_pt,2000,2) == true) {
-							sumpt = sumtrackpt(prim_track_pt,pile_track_pt);
-							hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,i);
-							break;
-						}			
-				}
+			/// No Condition
+			sumpt = sumtrackpt(all_prim_track_pt,all_pile_track_pt,all_track_pt);
+			hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,0);
+						
 			}
 					
 		}
