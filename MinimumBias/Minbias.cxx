@@ -128,6 +128,13 @@ int main(int argc, char *argv[]) {
 			isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax,&hist);
 			/// No Condition
 			sumpt = sumtrackpt(all_prim_track_pt,all_pile_track_pt,all_track_pt);
+			for (int i=0;i<mu_pt->size();i++){
+					
+						sumpt[0] = sumpt[0]- mu_pt->at(i)/1000;
+						sumpt[1] = sumpt[1]- mu_pt->at(i)/1000;
+						sumpt[2] = sumpt[2]- mu_pt->at(i)/1000;
+						
+					}
 			hist.FillHists(NumberOfVertices,averageNumberOfInteractions,sumpt,0);
 						
 			}
