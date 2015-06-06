@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
 					for (int i=0;i<mu_pt->size();i++){
 					
 						sumpt[0] = sumpt[0]- mu_pt->at(i)/1000;
-						sumpt[1] = sumpt[1]- mu_pt->at(i)/1000;
+						//sumpt[1] = sumpt[1]- mu_pt->at(i)/1000;
 						sumpt[2] = sumpt[2]- mu_pt->at(i)/1000;
 						
 					}
@@ -139,7 +139,8 @@ int main(int argc, char *argv[]) {
 						
 			}
 					
-		}
+		
+		
 		///Check the Track Association and Fill the correct histograms
 		checkassociation(&hist,countPVvec,countSVvec,vecCellsPt,vecCellsEta,vecCellsPhi,NumberOfVertices);	
 	}	
