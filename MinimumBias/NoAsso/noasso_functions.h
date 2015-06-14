@@ -115,69 +115,6 @@ bool checktrackpt(vector<double>* prim_track_pt,vector<double>*pile_track_pt,int
 	return result;	
 }
 
-///Check if the Cluster has associated tracks
-///			--- calls Fill2DHists with cond = : ---
-///			--- 0 if cluster has no assiciation ---
-///			--- 1 if cluster has primary association ---
-///			--- 2 if cluster has pile up association ---
-///			--- 3 if cluster has both associations ---			
-void checkassociation(Hists *hist,vector<int>* countPVvec, vector<int>* countSVvec,vector<double>* vecCellsPt,vector<double>* vecCellsEta,vector<double>* vecCellsPhi,int NumberofVertices){
-	bool prim = false,pile = false;
-	double pt =0,eta=0,phi=0;
-	int empty=0;
-	for (int i=0;i<vecCellsPt->size();i++) {
-		prim = true;
-		pile = true;
-		pt = vecCellsPt->at(i);
-		eta = vecCellsEta->at(i);
-		phi = vecCellsPhi->at(i);
-		if (countPVvec->at(i) == 0) prim = false;
-		if (countSVvec->at(i) == 0) pile = false;
-	
-		if (prim == true){
-			hist->Fill2DHists(eta,phi,pt,1,NumberofVertices);
-			if (pile == false) {
-				hist->Fill2DHists(eta,phi,pt,2);
-				hist->FillAssoHists(pt,1);
-			}
-			continue;
-		}
-		else if (prim == false) {
-			hist->FillAssoHists(pt,0);
-			if (pile == true) {
-				hist->Fill2DHists(eta,phi,pt,1,NumberofVertices);
-				hist->Fill2DHists(eta,phi,pt,3);
-				continue;
-			}
-			else hist->Fill2DHists(eta,phi,0,0);
-		}
-		
-		/////		Has Primary OR Secondary Tracks		
-		//if ((countPVvec->at(i) > 0) || (countSVvec->at(i) > 0)) {
-		//	hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),1,NumberofVertices);
-		//}
-		
-		///		Neither Primary nor Secondary Tracks
-		//if ((countPVvec->at(i) == 0) && (countSVvec->at(i) == 0)){
-		//	 hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),0,0);
-			
-	//	}
-		///		No Primary Tracks
-	//	if (countPVvec->at(i) == 0){
-	//		 hist->FillAssoHists(vecCellsPt->at(i),0);
-	//	}
-		///		Has Primary Tracks; NO Secondary 
-	//	if (countPVvec->at(i) > 0 && countSVvec->at(i)<1) {
-	//		hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),2);
-		//	hist->FillAssoHists(vecCellsPt->at(i),1);
-	//	}
-		///		Has Secondary Tracks; NO Primary
-		//if (countSVvec->at(i) > 0 && countPVvec->at(i)< 1) {
-		//	hist->Fill2DHists(vecCellsEta->at(i),vecCellsPhi->at(i),vecCellsPt->at(i),3);
-		//}	
-		
-	}
-}
 
 ///Check for wether it is a Z-Event with M e (Mmin,Mmax).
 bool Zcheck(vector<int>* charge, vector<double>* pt, vector<double>* eta, vector<double>* phi, TLorentzVector &recoZ, int Mmin, int Mmax,Hists *hist) {

@@ -9,7 +9,7 @@ using std::vector;
 
 #include "./setbranches.h"
 #include "./hists.h"
-//#include "./noasso_functions.h"
+#include "./noasso_functions.h"
 
 int main(int argc, char *argv[]) {
 	if (argc < 3){ ///Check Parameters
@@ -56,6 +56,7 @@ int main(int argc, char *argv[]) {
 	Hists hist;
 	int helper=0;
 	///Event Loop
+	if (Zfilt==false){
 	for (int i=0;i<totalEvents;i++)	{
 		
 		tree->GetEntry(i);
@@ -74,5 +75,28 @@ int main(int argc, char *argv[]) {
 		hist.FillNumClwoTrack(helper);
 		helper =0;
 	}
+	}
+	else {
+		for (int i=0;i<totalEvents;i++)	{
+		
+		tree->GetEntry(i);
+		TLorentzVector recoZ;
+		if (isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax,&hist)==true){
+		for (int j=0;j<vecCellsPt->size();j++){
+			if (countPVvec->at(j) ==0 && countSVvec->at(j)==0)
+				helper += 1;
+				hist.FillClusternoTrack(vecCellsPt->at(j),vecCellsEta->at(j));
+				for(int k =0;k<all_track_pt->size();k++){
+					if(sqrt(pow(vecCellsEta->at(j)-all_track_eta->at(k),2)+pow(vecCellsPhi->at(j)-all_track_phi->at(k),2))<0.4) hist.FillRTrack(all_track_pt->at(k));	
+				}
+				for(int k=0;k<vecCellsPt->size();k++){
+					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4) hist.FillRCluster(vecCellsPt->at(k));	
+				}	
+		}	
+		hist.FillNumClwoTrack(helper);
+		helper =0;
+	}
+	}
 	hist.WriteFile(fileO);
+}
 }
