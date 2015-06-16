@@ -97,6 +97,7 @@ int main(int argc, char *argv[]) {
 		helper =0;
 	}
 	}
-	hist.WriteFile(fileO);
+	
 }
+hist.WriteFile(fileO);
 }
