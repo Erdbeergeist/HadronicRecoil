@@ -66,10 +66,10 @@ int main(int argc, char *argv[]) {
 				helper += 1;
 				hist.FillClusternoTrack(vecCellsPt->at(j),vecCellsEta->at(j));
 				for(int k =0;k<all_track_pt->size();k++){
-					if(sqrt(pow(vecCellsEta->at(j)-all_track_eta->at(k),2)+pow(vecCellsPhi->at(j)-all_track_phi->at(k),2))<0.4) hist.FillRTrack(all_track_pt->at(k));	
+					if(sqrt(pow(vecCellsEta->at(j)-all_track_eta->at(k),2)+pow(vecCellsPhi->at(j)-all_track_phi->at(k),2))<0.4) hist.FillRTrack(all_track_pt->at(k),all_track_eta->at(k));	
 				}
 				for(int k=0;k<vecCellsPt->size();k++){
-					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4) hist.FillRCluster(vecCellsPt->at(k));	
+					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4) hist.FillRCluster(vecCellsPt->at(k),vecCellsEta->at(k));	
 				}	
 		}	
 		hist.FillNumClwoTrack(helper);
@@ -87,10 +87,10 @@ int main(int argc, char *argv[]) {
 				helper += 1;
 				hist.FillClusternoTrack(vecCellsPt->at(j),vecCellsEta->at(j));
 				for(int k =0;k<all_track_pt->size();k++){
-					if(sqrt(pow(vecCellsEta->at(j)-all_track_eta->at(k),2)+pow(vecCellsPhi->at(j)-all_track_phi->at(k),2))<0.4) hist.FillRTrack(all_track_pt->at(k));	
+					if(sqrt(pow(vecCellsEta->at(j)-all_track_eta->at(k),2)+pow(vecCellsPhi->at(j)-all_track_phi->at(k),2))<0.4) hist.FillRTrack(all_track_pt->at(k),all_track_eta->at(k));	
 				}
 				for(int k=0;k<vecCellsPt->size();k++){
-					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4) hist.FillRCluster(vecCellsPt->at(k));	
+					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4) hist.FillRCluster(vecCellsPt->at(k),vecCellsEta->at(k));	
 				}	
 		}	
 		hist.FillNumClwoTrack(helper);
