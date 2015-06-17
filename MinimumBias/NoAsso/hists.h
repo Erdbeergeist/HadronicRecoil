@@ -27,14 +27,6 @@ class Hists{
 			minb_mapHist1D["PtRcluster40"] = new TH1F("Pt R Clusters 40","",100,0,2000);
 			minb_mapHist1D["PtRtrack40"] = new TH1F("Pt R Tracks 40","",100,400,2000);
 			
-			//Sum of PT in delta R without the cluster itself
-			minb_mapHist1D["PtRclusterwS05"] = new TH1F("Pt R Clusters wS 05","",100,0,2000);
-			minb_mapHist1D["PtRclusterwS10"] = new TH1F("Pt R Clusters wS 10","",100,0,2000);
-			minb_mapHist1D["PtRclusterwS15"] = new TH1F("Pt R Clusters wS 15","",100,0,2000);
-			minb_mapHist1D["PtRclusterwS20"] = new TH1F("Pt R Clusters wS 20","",100,0,2000);
-			minb_mapHist1D["PtRclusterwS25"] = new TH1F("Pt R Clusters wS 25","",100,0,2000);
-			minb_mapHist1D["PtRclusterwS30"] = new TH1F("Pt R Clusters wS 30","",100,0,2000);
-			minb_mapHist1D["PtRclusterwS40"] = new TH1F("Pt R Clusters wS 40","",100,0,2000);
 			
 			//Sum of PT in delta R for diffrent #Vertices
 			minb_mapHist1D["PtRclusterNV10"] = new TH1F("Pt R Clusters #NVert 10","",100,0,2000);
@@ -89,17 +81,7 @@ class Hists{
 			
 		}
 		
-		void FillRwSCluster(double pt,double eta){
-			minb_mapHist1D["PtRcluster"]->Fill(pt);
-			if(fabs(eta)<0.5) minb_mapHist1D["PtRclusterwS05"]->Fill(pt);
-			else if (fabs(eta)<1) minb_mapHist1D["PtRclusterwS10"]->Fill(pt);
-			else if (fabs(eta)<1.5) minb_mapHist1D["PtRclusterwS15"]->Fill(pt);
-			else if (fabs(eta)<2) minb_mapHist1D["PtRclusterwS20"]->Fill(pt);
-			else if (fabs(eta)<2.5)	minb_mapHist1D["PtRclusterwS25"]->Fill(pt);
-			else if (fabs(eta)<3) minb_mapHist1D["PtRclusterwS30"]->Fill(pt);
-			else if (fabs(eta)<4) minb_mapHist1D["PtRclusterwS40"]->Fill(pt);
-			
-		}
+		
 		
 		
 		void FillClusternoTrack(double pt,double eta){	
