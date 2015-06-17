@@ -35,6 +35,14 @@ class Hists{
 			minb_mapHist1D["PtRclusterwS25"] = new TH1F("Pt R Clusters wS 25","",100,0,2000);
 			minb_mapHist1D["PtRclusterwS30"] = new TH1F("Pt R Clusters wS 30","",100,0,2000);
 			minb_mapHist1D["PtRclusterwS40"] = new TH1F("Pt R Clusters wS 40","",100,0,2000);
+			
+			//Sum of PT in delta R for diffrent #Vertices
+			minb_mapHist1D["PtRclusterNV10"] = new TH1F("Pt R Clusters #NVert 10","",100,0,2000);
+			minb_mapHist1D["PtRclusterNV15"] = new TH1F("Pt R Clusters #NVert 15","",100,0,2000);
+			minb_mapHist1D["PtRclusterNV20"] = new TH1F("Pt R Clusters #NVert 20","",100,0,2000);
+			minb_mapHist1D["PtRclusterNV25"] = new TH1F("Pt R Clusters #NVert 25","",100,0,2000);
+			minb_mapHist1D["PtRclusterNV35"] = new TH1F("Pt R Clusters #NVert 35","",100,0,2000);
+			
 			///2D Histograms
 			//Association Histograms
 			//minb_mapHist2D["PhiEtaNoA"] = new TH2F("Phi vs Eta no Association","",100,-2.5,2.5,100,-3.5,3.5);
@@ -70,6 +78,17 @@ class Hists{
 			else if (fabs(eta)<4) minb_mapHist1D["PtRcluster40"]->Fill(pt);
 			
 		}
+		
+		void FillRClusterVert(double pt,int numvert){
+			minb_mapHist1D["PtRcluster"]->Fill(pt);
+			if(numvert<10) minb_mapHist1D["PtRclusterNV10"]->Fill(pt);
+			else if (numvert<15) minb_mapHist1D["PtRclusterNV15"]->Fill(pt);
+			else if (numvert<20) minb_mapHist1D["PtRclusterNV20"]->Fill(pt);
+			else if (numvert<25) minb_mapHist1D["PtRclusterNV25"]->Fill(pt);
+			else if (numvert<35) minb_mapHist1D["PtRclusterNV35"]->Fill(pt);
+			
+		}
+		
 		void FillRwSCluster(double pt,double eta){
 			minb_mapHist1D["PtRcluster"]->Fill(pt);
 			if(fabs(eta)<0.5) minb_mapHist1D["PtRclusterwS05"]->Fill(pt);
@@ -81,6 +100,8 @@ class Hists{
 			else if (fabs(eta)<4) minb_mapHist1D["PtRclusterwS40"]->Fill(pt);
 			
 		}
+		
+		
 		void FillClusternoTrack(double pt,double eta){	
 			minb_mapHist1D["ClusterwoTrack"]->Fill(pt);
 			minb_mapHist1D["EtaClusterwoTrack"]->Fill(eta);

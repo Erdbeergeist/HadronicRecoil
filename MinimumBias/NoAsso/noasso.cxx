@@ -71,6 +71,7 @@ int main(int argc, char *argv[]) {
 				for(int k=0;k<vecCellsPt->size();k++){
 					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4){
 						hist.FillRCluster(vecCellsPt->at(k),vecCellsEta->at(k));
+						hist.FillRClusterVert(vecCellsPt->at(k),NumberOfVertices);
 						if (k!=j) hist.FillRwSCluster(vecCellsPt->at(k),vecCellsEta->at(k)); ///DONT COUNT THE CELL ITSELF	
 					}
 				}	
@@ -95,6 +96,7 @@ int main(int argc, char *argv[]) {
 				for(int k=0;k<vecCellsPt->size();k++){
 					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4){
 						hist.FillRCluster(vecCellsPt->at(k),vecCellsEta->at(k));
+						hist.FillRClusterVert(vecCellsPt->at(k),NumberOfVertices);
 						if (k!=j) hist.FillRwSCluster(vecCellsPt->at(k),vecCellsEta->at(k));//DONT COUNT THE CELL ITSELF	
 					}
 				}	
