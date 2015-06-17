@@ -41,7 +41,7 @@ class Hists{
 		void FillRTrack(double pt,double eta){
 			minb_mapHist1D["PtRtrack"]->Fill(pt);
 			if(fabs(eta)<0.5) minb_mapHist1D["PtRtrack05"]->Fill(pt);
-			else if (fabs(eta)<1) minb_mapHist1D["PtRtrack15"]->Fill(pt);
+			else if (fabs(eta)<1) minb_mapHist1D["PtRtrack10"]->Fill(pt);
 			else if (fabs(eta)<1.5) minb_mapHist1D["PtRtrack15"]->Fill(pt);
 			else if (fabs(eta)<2) minb_mapHist1D["PtRtrack20"]->Fill(pt);
 			else if (fabs(eta)<2.5)	minb_mapHist1D["PtRtrack25"]->Fill(pt);
@@ -53,7 +53,7 @@ class Hists{
 		void FillRCluster(double pt,double eta){
 			minb_mapHist1D["PtRcluster"]->Fill(pt);
 			if(fabs(eta)<0.5) minb_mapHist1D["PtRcluster05"]->Fill(pt);
-			else if (fabs(eta)<1) minb_mapHist1D["PtRcluster15"]->Fill(pt);
+			else if (fabs(eta)<1) minb_mapHist1D["PtRcluster10"]->Fill(pt);
 			else if (fabs(eta)<1.5) minb_mapHist1D["PtRcluster15"]->Fill(pt);
 			else if (fabs(eta)<2) minb_mapHist1D["PtRcluster20"]->Fill(pt);
 			else if (fabs(eta)<2.5)	minb_mapHist1D["PtRcluster25"]->Fill(pt);
