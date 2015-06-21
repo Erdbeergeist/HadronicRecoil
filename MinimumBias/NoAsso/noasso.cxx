@@ -72,8 +72,8 @@ int main(int argc, char *argv[]) {
 					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4){
 						hist.FillRCluster(vecCellsPt->at(k),vecCellsEta->at(k));
 						hist.FillRClusterVert(vecCellsPt->at(k),NumberOfVertices);
-						if (countPVvec->at(k)>0) hist.FillRClusterPrim(vecCellsPt->at(k),vecCellsEta->at(k));
-						if (countSVvec->at(k)>0) hist.FillRClusterPile(vecCellsPt->at(k),vecCellsEta->at(k));
+						if (countPVvec->at(k)>0&&countSVvec == 0) hist.FillRClusterPrim(vecCellsPt->at(k),vecCellsEta->at(k));
+						if (countSVvec->at(k)>0&&countPVvec == 0) hist.FillRClusterPile(vecCellsPt->at(k),vecCellsEta->at(k));
 					}
 				}	
 		}	
@@ -98,8 +98,8 @@ int main(int argc, char *argv[]) {
 					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4){
 						hist.FillRCluster(vecCellsPt->at(k),vecCellsEta->at(k));
 						hist.FillRClusterVert(vecCellsPt->at(k),NumberOfVertices);
-						if (countPVvec->at(k)>0) hist.FillRClusterPrim(vecCellsPt->at(k),vecCellsEta->at(k));
-						if (countSVvec->at(k)>0) hist.FillRClusterPile(vecCellsPt->at(k),vecCellsEta->at(k));
+						if (countPVvec->at(k)>0&&countSVvec == 0) hist.FillRClusterPrim(vecCellsPt->at(k),vecCellsEta->at(k));
+						if (countSVvec->at(k)>0&&countPVvec == 0) hist.FillRClusterPile(vecCellsPt->at(k),vecCellsEta->at(k));
 						
 					}
 				}	
