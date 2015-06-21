@@ -27,6 +27,23 @@ class Hists{
 			minb_mapHist1D["PtRcluster40"] = new TH1F("Pt R Clusters 40","",100,0,2000);
 			minb_mapHist1D["PtRtrack40"] = new TH1F("Pt R Tracks 40","",100,400,2000);
 			
+			minb_mapHist1D["PtRclusterPrim"] = new TH1F("Pt R Clusters Prim","",100,0,2000);
+			minb_mapHist1D["PtRclusterPrim05"] = new TH1F("Pt R Clusters Prim 05","",100,0,2000);
+			minb_mapHist1D["PtRclusterPrim10"] = new TH1F("Pt R Clusters Prim 10","",100,0,2000);
+			minb_mapHist1D["PtRclusterPrim15"] = new TH1F("Pt R Clusters Prim 15","",100,0,2000);
+			minb_mapHist1D["PtRclusterPrim20"] = new TH1F("Pt R Clusters Prim 20","",100,0,2000);
+			minb_mapHist1D["PtRclusterPrim25"] = new TH1F("Pt R Clusters Prim 25","",100,0,2000);
+			minb_mapHist1D["PtRclusterPrim30"] = new TH1F("Pt R Clusters Prim 30","",100,0,2000);
+			minb_mapHist1D["PtRclusterPrim40"] = new TH1F("Pt R Clusters Prim 40","",100,0,2000);
+			
+			minb_mapHist1D["PtRclusterPile"] = new TH1F("Pt R Clusters Pile ","",100,0,2000);
+			minb_mapHist1D["PtRclusterPile05"] = new TH1F("Pt R Clusters Pile 05","",100,0,2000);
+			minb_mapHist1D["PtRclusterPile10"] = new TH1F("Pt R Clusters Pile 10","",100,0,2000);
+			minb_mapHist1D["PtRclusterPile15"] = new TH1F("Pt R Clusters Pile 15","",100,0,2000);
+			minb_mapHist1D["PtRclusterPile20"] = new TH1F("Pt R Clusters Pile 20","",100,0,2000);
+			minb_mapHist1D["PtRclusterPile25"] = new TH1F("Pt R Clusters Pile 25","",100,0,2000);
+			minb_mapHist1D["PtRclusterPile30"] = new TH1F("Pt R Clusters Pile 30","",100,0,2000);
+			minb_mapHist1D["PtRclusterPile40"] = new TH1F("Pt R Clusters Pile 40","",100,0,2000);
 			
 			//Sum of PT in delta R for diffrent #Vertices
 			minb_mapHist1D["PtRclusterNV10"] = new TH1F("Pt R Clusters #NVert 10","",100,0,2000);
@@ -70,6 +87,28 @@ class Hists{
 			else if (fabs(eta)<4) minb_mapHist1D["PtRcluster40"]->Fill(pt);
 			
 		}
+		
+		void FillRClusterPrim(double pt,double eta){
+			minb_mapHist1D["PtRclusterPrim"]->Fill(pt);
+			if(fabs(eta)<0.5) minb_mapHist1D["PtRclusterPrim05"]->Fill(pt);
+			else if (fabs(eta)<1) minb_mapHist1D["PtRclusterPrim10"]->Fill(pt);
+			else if (fabs(eta)<1.5) minb_mapHist1D["PtRclusterPrim15"]->Fill(pt);
+			else if (fabs(eta)<2) minb_mapHist1D["PtRclusterPrim20"]->Fill(pt);
+			else if (fabs(eta)<2.5)	minb_mapHist1D["PtRclusterPrim25"]->Fill(pt);
+			else if (fabs(eta)<3) minb_mapHist1D["PtRclusterPrim30"]->Fill(pt);
+			else if (fabs(eta)<4) minb_mapHist1D["PtRclusterPrim40"]->Fill(pt);
+		}
+		
+		void FillRClusterPile(double pt,double eta){
+			minb_mapHist1D["PtRclusterPile"]->Fill(pt);
+			if(fabs(eta)<0.5) minb_mapHist1D["PtRclusterPile05"]->Fill(pt);
+			else if (fabs(eta)<1) minb_mapHist1D["PtRclusterPile10"]->Fill(pt);
+			else if (fabs(eta)<1.5) minb_mapHist1D["PtRclusterPile15"]->Fill(pt);
+			else if (fabs(eta)<2) minb_mapHist1D["PtRclusterPile20"]->Fill(pt);
+			else if (fabs(eta)<2.5)	minb_mapHist1D["PtRclusterPile25"]->Fill(pt);
+			else if (fabs(eta)<3) minb_mapHist1D["PtRclusterPile30"]->Fill(pt);
+			else if (fabs(eta)<4) minb_mapHist1D["PtRclusterPile40"]->Fill(pt);
+		}	
 		
 		void FillRClusterVert(double pt,int numvert){
 			minb_mapHist1D["PtRcluster"]->Fill(pt);
