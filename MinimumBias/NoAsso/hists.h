@@ -23,11 +23,12 @@ class Hists{
 			minb_mapHist1D["Ptcluster40"] = new TH1F("Pt  Clusters  40","",100,0,2000);
 			
 			minb_mapHist1D["PtclusterNV"] = new TH1F("Pt  Clusters #NV","",100,0,2000);
+			minb_mapHist1D["PtclusterNV5"] = new TH1F("Pt  Clusters  #NV 5","",100,0,2000);
 			minb_mapHist1D["PtclusterNV10"] = new TH1F("Pt  Clusters  #NV 10","",100,0,2000);
 			minb_mapHist1D["PtclusterNV15"] = new TH1F("Pt  Clusters  #NV 15","",100,0,2000);
 			minb_mapHist1D["PtclusterNV20"] = new TH1F("Pt  Clusters  #NV 20","",100,0,2000);
 			minb_mapHist1D["PtclusterNV25"] = new TH1F("Pt  Clusters  #NV 25","",100,0,2000);
-			minb_mapHist1D["PtclusterNV35"] = new TH1F("Pt  Clusters  #NV 35","",100,0,2000);
+			minb_mapHist1D["PtclusterNV30"] = new TH1F("Pt  Clusters  #NV 30","",100,0,2000);
 						
 			minb_mapHist1D["PtRcluster05"] = new TH1F("Pt R Clusters 05","",100,0,2000);
 			minb_mapHist1D["PtRtrack05"] = new TH1F("Pt R Tracks 05","",100,400,2000);
@@ -63,11 +64,12 @@ class Hists{
 			minb_mapHist1D["PtRclusterPile40"] = new TH1F("Pt R Clusters Pile 40","",100,0,2000);
 			
 			//Sum of PT in delta R for diffrent #Vertices
+			minb_mapHist1D["PtRclusterNV5"] = new TH1F("Pt R Clusters #NVert 5","",100,0,2000);
 			minb_mapHist1D["PtRclusterNV10"] = new TH1F("Pt R Clusters #NVert 10","",100,0,2000);
 			minb_mapHist1D["PtRclusterNV15"] = new TH1F("Pt R Clusters #NVert 15","",100,0,2000);
 			minb_mapHist1D["PtRclusterNV20"] = new TH1F("Pt R Clusters #NVert 20","",100,0,2000);
 			minb_mapHist1D["PtRclusterNV25"] = new TH1F("Pt R Clusters #NVert 25","",100,0,2000);
-			minb_mapHist1D["PtRclusterNV35"] = new TH1F("Pt R Clusters #NVert 35","",100,0,2000);
+			minb_mapHist1D["PtRclusterNV30"] = new TH1F("Pt R Clusters #NVert 30","",100,0,2000);
 			
 			///2D Histograms
 			//Association Histograms
@@ -144,22 +146,24 @@ class Hists{
 		
 		void FillRClusterVert(double pt,int numvert){
 			
-			if(numvert<10) minb_mapHist1D["PtRclusterNV10"]->Fill(pt);
+			if(numvert<5) minb_mapHist1D["PtRclusterNV5"]->Fill(pt);
+			else if(numvert<10) minb_mapHist1D["PtRclusterNV10"]->Fill(pt);
 			else if (numvert<15) minb_mapHist1D["PtRclusterNV15"]->Fill(pt);
 			else if (numvert<20) minb_mapHist1D["PtRclusterNV20"]->Fill(pt);
 			else if (numvert<25) minb_mapHist1D["PtRclusterNV25"]->Fill(pt);
-			else if (numvert<35) minb_mapHist1D["PtRclusterNV35"]->Fill(pt);
+			else if (numvert<35) minb_mapHist1D["PtRclusterNV30"]->Fill(pt);
 			
 		}
 		
 		void FillClusterVert(double pt,int numvert){
 			nv+=1;
 			minb_mapHist1D["PtclusterNV"]->Fill(pt);
-			if(numvert<10) minb_mapHist1D["PtclusterNV10"]->Fill(pt);
+			if(numvert<5) minb_mapHist1D["PtclusterNV5"]->Fill(pt);
+			else if(numvert<10) minb_mapHist1D["PtclusterNV10"]->Fill(pt);
 			else if (numvert<15) minb_mapHist1D["PtclusterNV15"]->Fill(pt);
 			else if (numvert<20) minb_mapHist1D["PtclusterNV20"]->Fill(pt);
 			else if (numvert<25) minb_mapHist1D["PtclusterNV25"]->Fill(pt);
-			else if (numvert<35) minb_mapHist1D["PtclusterNV35"]->Fill(pt);
+			else if (numvert<30) minb_mapHist1D["PtclusterNV30"]->Fill(pt);
 			
 		}
 		
