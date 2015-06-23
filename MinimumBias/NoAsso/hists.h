@@ -3,6 +3,7 @@ class Hists{
 		Hists() {
 			initHists();
 			
+			
 		}
 		///Initialize the Histograms
 		void initHists() {
@@ -12,6 +13,22 @@ class Hists{
 			minb_mapHist1D["ClusterwoTrack"] = new TH1F("Pt Cluster without Track","",100,0,8000);
 			minb_mapHist1D["EtaClusterwoTrack"] = new TH1F("Eta Cluster without Track","",15,-4,4);
 			
+			minb_mapHist1D["Ptcluster"] = new TH1F("Pt  Clusters ","",100,0,2000);
+			minb_mapHist1D["Ptcluster05"] = new TH1F("Pt  Clusters  05","",100,0,2000);
+			minb_mapHist1D["Ptcluster10"] = new TH1F("Pt  Clusters  10","",100,0,2000);
+			minb_mapHist1D["Ptcluster15"] = new TH1F("Pt  Clusters  15","",100,0,2000);
+			minb_mapHist1D["Ptcluster20"] = new TH1F("Pt  Clusters  20","",100,0,2000);
+			minb_mapHist1D["Ptcluster25"] = new TH1F("Pt  Clusters  25","",100,0,2000);
+			minb_mapHist1D["Ptcluster30"] = new TH1F("Pt  Clusters  30","",100,0,2000);
+			minb_mapHist1D["Ptcluster40"] = new TH1F("Pt  Clusters  40","",100,0,2000);
+			
+			minb_mapHist1D["PtclusterNV"] = new TH1F("Pt  Clusters #NV","",100,0,2000);
+			minb_mapHist1D["PtclusterNV10"] = new TH1F("Pt  Clusters  #NV 10","",100,0,2000);
+			minb_mapHist1D["PtclusterNV15"] = new TH1F("Pt  Clusters  #NV 15","",100,0,2000);
+			minb_mapHist1D["PtclusterNV20"] = new TH1F("Pt  Clusters  #NV 20","",100,0,2000);
+			minb_mapHist1D["PtclusterNV25"] = new TH1F("Pt  Clusters  #NV 25","",100,0,2000);
+			minb_mapHist1D["PtclusterNV35"] = new TH1F("Pt  Clusters  #NV 35","",100,0,2000);
+						
 			minb_mapHist1D["PtRcluster05"] = new TH1F("Pt R Clusters 05","",100,0,2000);
 			minb_mapHist1D["PtRtrack05"] = new TH1F("Pt R Tracks 05","",100,400,2000);
 			minb_mapHist1D["PtRcluster10"] = new TH1F("Pt R Clusters 10","",100,0,2000);
@@ -59,6 +76,8 @@ class Hists{
 			//minb_mapHist2D["PhiEtaPrim"] = new TH2F("Phi vs Eta with Primary Association","",100,-2.5,2.5,100,-3.5,3.5);
 			//minb_mapHist2D["PhiEtaPile"] = new TH2F("Phi vs Eta with Pile Up Association","",100,-2.5,2.5,100,-3.5,3.5);
 			
+			ptc=0;
+			nv=0;
 			
 		}
 		void FillNumClwoTrack(int num){
@@ -74,8 +93,21 @@ class Hists{
 			else if (fabs(eta)<3) minb_mapHist1D["PtRtrack30"]->Fill(pt);
 			else if (fabs(eta)<4) minb_mapHist1D["PtRtrack40"]->Fill(pt);
 			
+		}
+		
+		void FillCluster(double pt,double eta){
+			minb_mapHist1D["Ptcluster"]->Fill(pt);
+			ptc+=1;
+			if(fabs(eta)<0.5) minb_mapHist1D["Ptcluster05"]->Fill(pt);
+			else if (fabs(eta)<1) minb_mapHist1D["Ptcluster10"]->Fill(pt);
+			else if (fabs(eta)<1.5) minb_mapHist1D["Ptcluster15"]->Fill(pt);
+			else if (fabs(eta)<2) minb_mapHist1D["Ptcluster20"]->Fill(pt);
+			else if (fabs(eta)<2.5)	minb_mapHist1D["Ptcluster25"]->Fill(pt);
+			else if (fabs(eta)<3) minb_mapHist1D["Ptcluster30"]->Fill(pt);
+			else if (fabs(eta)<4) minb_mapHist1D["Ptcluster40"]->Fill(pt);
 			
 		}
+		
 		void FillRCluster(double pt,double eta){
 			minb_mapHist1D["PtRcluster"]->Fill(pt);
 			if(fabs(eta)<0.5) minb_mapHist1D["PtRcluster05"]->Fill(pt);
@@ -87,7 +119,7 @@ class Hists{
 			else if (fabs(eta)<4) minb_mapHist1D["PtRcluster40"]->Fill(pt);
 			
 		}
-		
+				
 		void FillRClusterPrim(double pt,double eta){
 			minb_mapHist1D["PtRclusterPrim"]->Fill(pt);
 			if(fabs(eta)<0.5) minb_mapHist1D["PtRclusterPrim05"]->Fill(pt);
@@ -111,12 +143,23 @@ class Hists{
 		}	
 		
 		void FillRClusterVert(double pt,int numvert){
-			minb_mapHist1D["PtRcluster"]->Fill(pt);
+			
 			if(numvert<10) minb_mapHist1D["PtRclusterNV10"]->Fill(pt);
 			else if (numvert<15) minb_mapHist1D["PtRclusterNV15"]->Fill(pt);
 			else if (numvert<20) minb_mapHist1D["PtRclusterNV20"]->Fill(pt);
 			else if (numvert<25) minb_mapHist1D["PtRclusterNV25"]->Fill(pt);
 			else if (numvert<35) minb_mapHist1D["PtRclusterNV35"]->Fill(pt);
+			
+		}
+		
+		void FillClusterVert(double pt,int numvert){
+			nv+=1;
+			minb_mapHist1D["PtclusterNV"]->Fill(pt);
+			if(numvert<10) minb_mapHist1D["PtclusterNV10"]->Fill(pt);
+			else if (numvert<15) minb_mapHist1D["PtclusterNV15"]->Fill(pt);
+			else if (numvert<20) minb_mapHist1D["PtclusterNV20"]->Fill(pt);
+			else if (numvert<25) minb_mapHist1D["PtclusterNV25"]->Fill(pt);
+			else if (numvert<35) minb_mapHist1D["PtclusterNV35"]->Fill(pt);
 			
 		}
 		
@@ -132,10 +175,12 @@ class Hists{
 		void WriteFile(TFile *fileO){
 			fileO->Write();
 			fileO->Close();
+			cout<<ptc<<"\t"<<nv<<endl;
 		}
 		
 	private:
 		map<string, TH1*>		minb_mapHist1D;
 		map<string, TH2*>		minb_mapHist2D;
+		int ptc,nv;
 		
 };

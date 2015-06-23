@@ -62,7 +62,9 @@ int main(int argc, char *argv[]) {
 		tree->GetEntry(i);
 		
 		for (int j=0;j<vecCellsPt->size();j++){
-			if (countPVvec->at(j) ==0 && countSVvec->at(j)==0)
+			if (countPVvec->at(j) ==0 && countSVvec->at(j)==0){
+				hist.FillCluster(vecCellsPt->at(j),vecCellsEta->at(j));
+				hist.FillClusterVert(vecCellsPt->at(j),NumberOfVertices);
 				helper += 1;
 				hist.FillClusternoTrack(vecCellsPt->at(j),vecCellsEta->at(j));
 				for(int k =0;k<all_track_pt->size();k++){
@@ -72,10 +74,11 @@ int main(int argc, char *argv[]) {
 					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4){
 						hist.FillRCluster(vecCellsPt->at(k),vecCellsEta->at(k));
 						hist.FillRClusterVert(vecCellsPt->at(k),NumberOfVertices);
-						if (countPVvec->at(k)>0&&countSVvec == 0) hist.FillRClusterPrim(vecCellsPt->at(k),vecCellsEta->at(k));
-						if (countSVvec->at(k)>0&&countPVvec == 0) hist.FillRClusterPile(vecCellsPt->at(k),vecCellsEta->at(k));
+						if (countPVvec->at(k)>0) hist.FillRClusterPrim(vecCellsPt->at(k),vecCellsEta->at(k));
+						if (countSVvec->at(k)>0) hist.FillRClusterPile(vecCellsPt->at(k),vecCellsEta->at(k));
 					}
-				}	
+				}
+			}		
 		}	
 		hist.FillNumClwoTrack(helper);
 		helper =0;
@@ -88,7 +91,10 @@ int main(int argc, char *argv[]) {
 		TLorentzVector recoZ;
 		if (isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax,&hist)==true){
 		for (int j=0;j<vecCellsPt->size();j++){
-			if (countPVvec->at(j) ==0 && countSVvec->at(j)==0)
+			
+			if (countPVvec->at(j) ==0 && countSVvec->at(j)==0){
+				hist.FillCluster(vecCellsPt->at(j),vecCellsEta->at(j));
+				hist.FillClusterVert(vecCellsPt->at(j),NumberOfVertices);
 				helper += 1;
 				hist.FillClusternoTrack(vecCellsPt->at(j),vecCellsEta->at(j));
 				for(int k =0;k<all_track_pt->size();k++){
@@ -98,11 +104,12 @@ int main(int argc, char *argv[]) {
 					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4){
 						hist.FillRCluster(vecCellsPt->at(k),vecCellsEta->at(k));
 						hist.FillRClusterVert(vecCellsPt->at(k),NumberOfVertices);
-						if (countPVvec->at(k)>0&&countSVvec == 0) hist.FillRClusterPrim(vecCellsPt->at(k),vecCellsEta->at(k));
-						if (countSVvec->at(k)>0&&countPVvec == 0) hist.FillRClusterPile(vecCellsPt->at(k),vecCellsEta->at(k));
+						if (countPVvec->at(k)>0) hist.FillRClusterPrim(vecCellsPt->at(k),vecCellsEta->at(k));
+						if (countSVvec->at(k)>0) hist.FillRClusterPile(vecCellsPt->at(k),vecCellsEta->at(k));
 						
 					}
-				}	
+				}
+			}		
 		}	
 		hist.FillNumClwoTrack(helper);
 		helper =0;
