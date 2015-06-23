@@ -83,17 +83,81 @@ class Hists{
 			for (int i=0;i<EtaLimits.size();i++){
 				for (int j = 0;j<NumberofVerticesLimits.size();j++){
 					for (int k=0;k<PTLimits.size();k++){
-						string temp = "SumPTEta"+to_string(EtaLimits[i])+"NV"+to_string(NumberofVerticesLimits[j])+"PT"+to_string(PTLimits[k]);
-						char* name = new char [temp.length()+1];
-						strcpy(name,temp.c_str());
-						minb_mapHist1D[name] = new TH1F(name,"",100,0,2000);
+						char* name = GetNestedHistogramName(EtaLimits[i],NumberofVerticesLimits[j],PTLimits[k]);
+						
+						int lowerBound;
+						if (k==0) lowerBound = 0;
+						else lowerBound = PTLimits[k-1];
+						
+						minb_mapHist1D[name] = new TH1F(name,"",100,lowerBound,PTLimits[k]);
+					}
+				}
+			}
+			/////!!!!!GetNestedRHistogramName!!!!! Initialises the same as above but for Delta R Histograms
+			for (int i=0;i<EtaLimits.size();i++){
+				for (int j = 0;j<NumberofVerticesLimits.size();j++){
+					for (int k=0;k<PTLimits.size();k++){
+						char* name = GetNestedRHistogramName(EtaLimits[i],NumberofVerticesLimits[j],PTLimits[k]);
+						int lowerBound;
+						if (k==0) lowerBound = 0;
+						else lowerBound = PTLimits[k-1];
+						minb_mapHist1D[name] = new TH1F(name,"",100,lowerBound,PTLimits[k]);
 					}
 				}
 			}
 			
 			
 		}
-			
+		
+		void FillNestedHistograms(double pt, double eta, int NumberofVertices){
+			array<int,6> EtaLimits = {5,10,15,20,25,40};
+			array<int,6> NumberofVerticesLimits = {5,10,15,20,25,30};
+			array<int,5> PTLimits = {500,600,800,1200,2000};
+			//cout<<"PT:"<<pt<<"\t ETA:"<<eta<<"\t NV:"<<NumberofVertices<<endl;
+			for (int i=0;i<EtaLimits.size();i++){
+				if(eta<EtaLimits[i]/10){
+					for (int j=0;j<NumberofVerticesLimits.size();j++){
+						if(NumberofVertices<NumberofVerticesLimits[j]){
+							for (int k=0;k<PTLimits.size();k++){
+								if(pt<PTLimits[k]){
+									char* name = GetNestedHistogramName(EtaLimits[i],NumberofVerticesLimits[j],PTLimits[k]);
+									//cout<<name<<endl;
+									minb_mapHist1D[name]->Fill(pt);
+									return;
+								}	 
+							}
+						}	
+					}	
+				}
+			}
+		
+		}
+		
+		
+		void FillNestedRHistograms(double pt, double eta, int NumberofVertices){
+			array<int,6> EtaLimits = {5,10,15,20,25,40};
+			array<int,6> NumberofVerticesLimits = {5,10,15,20,25,30};
+			array<int,5> PTLimits = {500,600,800,1200,2000};
+			//cout<<"PT:"<<pt<<"\t ETA:"<<eta<<"\t NV:"<<NumberofVertices<<endl;
+			for (int i=0;i<EtaLimits.size();i++){
+				if(eta<EtaLimits[i]/10){
+					for (int j=0;j<NumberofVerticesLimits.size();j++){
+						if(NumberofVertices<NumberofVerticesLimits[j]){
+							for (int k=0;k<PTLimits.size();k++){
+								if(pt<PTLimits[k]){
+									char* name = GetNestedRHistogramName(EtaLimits[i],NumberofVerticesLimits[j],PTLimits[k]);
+									//cout<<name<<endl;
+									minb_mapHist1D[name]->Fill(pt);
+									return;
+								}	 
+							}
+						}	
+					}	
+				}
+			}
+		
+		}
+		
 		void FillNumClwoTrack(int num){
 			minb_mapHist1D["NumClwoTracks"]->Fill(num);
 		}
@@ -198,5 +262,20 @@ class Hists{
 		map<string, TH1*>		minb_mapHist1D;
 		map<string, TH2*>		minb_mapHist2D;
 		
+		char* GetNestedRHistogramName(int EtaLimit,int NumberofVerticesLimit,int PTLimit){
+			string temp = "SumPTREta"+to_string(static_cast<long long int>(EtaLimit))+"NV"+to_string(static_cast<long long int>(NumberofVerticesLimit))+"PT"+to_string(static_cast<long long int>(PTLimit));
+			char* name = new char [temp.length()+1];
+			strcpy(name,temp.c_str());
+			return name;
+
+		}
 		
+		char* GetNestedHistogramName(int EtaLimit,int NumberofVerticesLimit,int PTLimit){
+			string temp = "SumPTEta"+to_string(static_cast<long long int>(EtaLimit))+"NV"+to_string(static_cast<long long int>(NumberofVerticesLimit))+"PT"+to_string(static_cast<long long int>(PTLimit));
+			char* name = new char [temp.length()+1];
+			strcpy(name,temp.c_str());
+			return name;
+
+		}
 };
+

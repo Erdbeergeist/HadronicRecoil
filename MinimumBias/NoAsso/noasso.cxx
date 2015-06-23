@@ -3,6 +3,8 @@
 #include <stdlib.h> 
 #include "./EWCommonIncludes.h"
 #include <cmath>
+#include <array>
+#include <string>
 
 using namespace std;
 using std::vector;
@@ -67,12 +69,14 @@ int main(int argc, char *argv[]) {
 				hist.FillClusterVert(vecCellsPt->at(j),NumberOfVertices);
 				helper += 1;
 				hist.FillClusternoTrack(vecCellsPt->at(j),vecCellsEta->at(j));
+				hist.FillNestedHistograms(vecCellsPt->at(j),vecCellsEta->at(j),NumberOfVertices);
 				for(int k =0;k<all_track_pt->size();k++){
 					if(sqrt(pow(vecCellsEta->at(j)-all_track_eta->at(k),2)+pow(vecCellsPhi->at(j)-all_track_phi->at(k),2))<0.4) hist.FillRTrack(all_track_pt->at(k),all_track_eta->at(k));	
 				}
 				for(int k=0;k<vecCellsPt->size();k++){
 					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4){
 						hist.FillRCluster(vecCellsPt->at(k),vecCellsEta->at(k));
+						hist.FillNestedRHistograms(vecCellsPt->at(k),vecCellsEta->at(k),NumberOfVertices);
 						hist.FillRClusterVert(vecCellsPt->at(k),NumberOfVertices);
 						if (countPVvec->at(k)>0) hist.FillRClusterPrim(vecCellsPt->at(k),vecCellsEta->at(k));
 						if (countSVvec->at(k)>0) hist.FillRClusterPile(vecCellsPt->at(k),vecCellsEta->at(k));
@@ -97,12 +101,15 @@ int main(int argc, char *argv[]) {
 				hist.FillClusterVert(vecCellsPt->at(j),NumberOfVertices);
 				helper += 1;
 				hist.FillClusternoTrack(vecCellsPt->at(j),vecCellsEta->at(j));
+				hist.FillNestedHistograms(vecCellsPt->at(j),vecCellsEta->at(j),NumberOfVertices);
 				for(int k =0;k<all_track_pt->size();k++){
 					if(sqrt(pow(vecCellsEta->at(j)-all_track_eta->at(k),2)+pow(vecCellsPhi->at(j)-all_track_phi->at(k),2))<0.4) hist.FillRTrack(all_track_pt->at(k),all_track_eta->at(k));	
 				}
+				
 				for(int k=0;k<vecCellsPt->size();k++){
 					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4){
 						hist.FillRCluster(vecCellsPt->at(k),vecCellsEta->at(k));
+						hist.FillNestedRHistograms(vecCellsPt->at(k),vecCellsEta->at(k),NumberOfVertices);
 						hist.FillRClusterVert(vecCellsPt->at(k),NumberOfVertices);
 						if (countPVvec->at(k)>0) hist.FillRClusterPrim(vecCellsPt->at(k),vecCellsEta->at(k));
 						if (countSVvec->at(k)>0) hist.FillRClusterPile(vecCellsPt->at(k),vecCellsEta->at(k));
