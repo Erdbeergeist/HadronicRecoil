@@ -89,11 +89,11 @@ class Hists{
 						if (k==0) lowerBound = 0;
 						else lowerBound = PTLimits[k-1];
 						
-						minb_mapHist1D[name] = new TH1F(name,"",100,lowerBound,PTLimits[k]);
+						minb_mapHist1D[name] = new TH1F(name,"",100,0,2000);
 					}
 				}
 			}
-			/////!!!!!GetNestedRHistogramName!!!!! Initialises the same as above but for Delta R Histograms
+			/*/////!!!!!GetNestedRHistogramName!!!!! Initialises the same as above but for Delta R Histograms
 			for (int i=0;i<EtaLimits.size();i++){
 				for (int j = 0;j<NumberofVerticesLimits.size();j++){
 					for (int k=0;k<PTLimits.size();k++){
@@ -101,15 +101,15 @@ class Hists{
 						int lowerBound;
 						if (k==0) lowerBound = 0;
 						else lowerBound = PTLimits[k-1];
-						minb_mapHist1D[name] = new TH1F(name,"",100,lowerBound,PTLimits[k]);
+						minb_mapHist1D[name] = new TH1F(name,"",100,0,2000);
 					}
 				}
-			}
+			}*/
 			
 			
 		}
 		
-		void FillNestedHistograms(double pt, double eta, int NumberofVertices){
+		void FillNestedHistograms(double pt, double eta, int NumberofVertices,double SumDRPT){
 			array<double,6> EtaLimits = {5,10,15,20,25,40};
 			array<int,6> NumberofVerticesLimits = {5,10,15,20,25,30};
 			array<int,5> PTLimits = {500,600,800,1200,2000};
@@ -121,7 +121,7 @@ class Hists{
 					for (int j=0;j<NumberofVerticesLimits.size();j++){
 						if(NumberofVertices<NumberofVerticesLimits[j]){
 							for (int k=0;k<PTLimits.size();k++){
-								if(pt<PTLimits[k]){
+								if(SumDRPT<PTLimits[k]){
 									char* name = GetNestedHistogramName(EtaLimits[i],NumberofVerticesLimits[j],PTLimits[k]);
 									//cout<<name<<endl;
 									minb_mapHist1D[name]->Fill(pt);
@@ -136,7 +136,7 @@ class Hists{
 		}
 		
 		////!!!same as above but for Delta R Histograms
-		void FillNestedRHistograms(double pt, double eta, int NumberofVertices){
+		void FillNestedRHistograms(double pt, double eta, int NumberofVertices,double SumDRPT){
 			array<double,6> EtaLimits = {5,10,15,20,25,40};
 			array<int,6> NumberofVerticesLimits = {5,10,15,20,25,30};
 			array<int,5> PTLimits = {500,600,800,1200,2000};
@@ -146,7 +146,7 @@ class Hists{
 					for (int j=0;j<NumberofVerticesLimits.size();j++){
 						if(NumberofVertices<NumberofVerticesLimits[j]){
 							for (int k=0;k<PTLimits.size();k++){
-								if(pt<PTLimits[k]){
+								if(SumDRPT<PTLimits[k]){
 									char* name = GetNestedRHistogramName(EtaLimits[i],NumberofVerticesLimits[j],PTLimits[k]);
 									//cout<<name<<endl;
 									minb_mapHist1D[name]->Fill(pt);
