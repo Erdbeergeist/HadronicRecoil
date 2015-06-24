@@ -92,6 +92,7 @@ int main(int argc, char *argv[]) {
 		for (int i=0;i<totalEvents;i++)	{
 		
 		tree->GetEntry(i);
+		
 		TLorentzVector recoZ;
 		if (isZ = Zcheck(mu_charge,mu_pt,mu_eta,mu_phi,recoZ,ZMmin,ZMmax,&hist)==true){
 		for (int j=0;j<vecCellsPt->size();j++){

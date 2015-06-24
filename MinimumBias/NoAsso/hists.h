@@ -76,7 +76,7 @@ class Hists{
 		}
 		
 		void initialisenestedHistograms(){
-			array<int,6> EtaLimits = {5,10,15,20,25,40};
+			array<double,6> EtaLimits = {5,10,15,20,25,40};
 			array<int,6> NumberofVerticesLimits = {5,10,15,20,25,30};
 			array<int,5> PTLimits = {500,600,800,1200,2000};
 			
@@ -110,11 +110,13 @@ class Hists{
 		}
 		
 		void FillNestedHistograms(double pt, double eta, int NumberofVertices){
-			array<int,6> EtaLimits = {5,10,15,20,25,40};
+			array<double,6> EtaLimits = {5,10,15,20,25,40};
 			array<int,6> NumberofVerticesLimits = {5,10,15,20,25,30};
 			array<int,5> PTLimits = {500,600,800,1200,2000};
 			//cout<<"PT:"<<pt<<"\t ETA:"<<eta<<"\t NV:"<<NumberofVertices<<endl;
 			for (int i=0;i<EtaLimits.size();i++){
+				double help = EtaLimits[i]/10;
+				//cout<<help<<endl;
 				if(eta<EtaLimits[i]/10){
 					for (int j=0;j<NumberofVerticesLimits.size();j++){
 						if(NumberofVertices<NumberofVerticesLimits[j]){
@@ -133,9 +135,9 @@ class Hists{
 		
 		}
 		
-		
+		////!!!same as above but for Delta R Histograms
 		void FillNestedRHistograms(double pt, double eta, int NumberofVertices){
-			array<int,6> EtaLimits = {5,10,15,20,25,40};
+			array<double,6> EtaLimits = {5,10,15,20,25,40};
 			array<int,6> NumberofVerticesLimits = {5,10,15,20,25,30};
 			array<int,5> PTLimits = {500,600,800,1200,2000};
 			//cout<<"PT:"<<pt<<"\t ETA:"<<eta<<"\t NV:"<<NumberofVertices<<endl;
