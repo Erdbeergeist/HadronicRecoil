@@ -78,7 +78,7 @@ class Hists{
 		void initialisenestedHistograms(){
 			array<double,6> EtaLimits = {5,10,15,20,25,40};
 			array<int,6> NumberofVerticesLimits = {5,10,15,20,25,30};
-			array<int,5> PTLimits = {500,600,800,1200,2000};
+			array<int,6> PTLimits = {400,700,1000,1300,1600,1900};
 			
 			for (int i=0;i<EtaLimits.size();i++){
 				for (int j = 0;j<NumberofVerticesLimits.size();j++){
@@ -112,7 +112,8 @@ class Hists{
 		void FillNestedHistograms(double pt, double eta, int NumberofVertices,double SumDRPT){
 			array<double,6> EtaLimits = {5,10,15,20,25,40};
 			array<int,6> NumberofVerticesLimits = {5,10,15,20,25,30};
-			array<int,5> PTLimits = {500,600,800,1200,2000};
+			array<int,6> PTLimits = {400,700,1000,1300,1600,1900};
+			
 			//cout<<"PT:"<<pt<<"\t ETA:"<<eta<<"\t NV:"<<NumberofVertices<<endl;
 			for (int i=0;i<EtaLimits.size();i++){
 				double help = EtaLimits[i]/10;
@@ -139,7 +140,8 @@ class Hists{
 		void FillNestedRHistograms(double pt, double eta, int NumberofVertices,double SumDRPT){
 			array<double,6> EtaLimits = {5,10,15,20,25,40};
 			array<int,6> NumberofVerticesLimits = {5,10,15,20,25,30};
-			array<int,5> PTLimits = {500,600,800,1200,2000};
+			array<int,6> PTLimits = {400,700,1000,1300,1600,1900};
+			
 			//cout<<"PT:"<<pt<<"\t ETA:"<<eta<<"\t NV:"<<NumberofVertices<<endl;
 			for (int i=0;i<EtaLimits.size();i++){
 				if(eta<EtaLimits[i]/10){
