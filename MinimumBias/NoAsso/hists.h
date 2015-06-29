@@ -10,6 +10,7 @@ class Hists{
 			minb_mapHist1D["NumClwoTracks"] = new TH1F("Number of Clusters without Tracks","",100,0,100);
 			minb_mapHist1D["ClusterwoTrack"] = new TH1F("Pt Cluster without Track","",100,0,8000);
 			minb_mapHist1D["EtaClusterwoTrack"] = new TH1F("Eta Cluster without Track","",15,-4,4);
+			minb_mapHist1D["NumTracksinD"] = new TH1F("Number of Tracks in Cone","",100,0,40);
 			minb_mapHist1D["PtRcluster"] = new TH1F("Pt R Clusters","",100,0,2000);
 			minb_mapHist1D["PtRtrack"] = new TH1F("Pt R Tracks","",100,400,2000);
 						
@@ -109,11 +110,11 @@ class Hists{
 			
 		}
 		
-		void FillNestedHistograms(double pt, double eta, int NumberofVertices,double SumDRPT){
+		void FillNestedHistograms(double pt, double eta, int NumberofVertices,double SumDRPT,int NumTracksinD){
 			array<double,6> EtaLimits = {5,10,15,20,25,40};
 			array<int,6> NumberofVerticesLimits = {5,10,15,20,25,30};
 			array<int,6> PTLimits = {400,700,1000,1300,1600,1900};
-			
+			minb_mapHist1D["NumTracksinD"]-> Fill(NumTracksinD);
 			//cout<<"PT:"<<pt<<"\t ETA:"<<eta<<"\t NV:"<<NumberofVertices<<endl;
 			for (int i=0;i<EtaLimits.size();i++){
 				double help = EtaLimits[i]/10;

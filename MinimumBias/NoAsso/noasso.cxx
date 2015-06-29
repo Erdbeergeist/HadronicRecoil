@@ -66,6 +66,7 @@ int main(int argc, char *argv[]) {
 		for (int j=0;j<vecCellsPt->size();j++){
 			if (countPVvec->at(j) ==0 && countSVvec->at(j)==0){
 				double SumDRPT=0;
+				int NumTracksinD=0;
 				hist.FillCluster(vecCellsPt->at(j),vecCellsEta->at(j));
 				hist.FillClusterVert(vecCellsPt->at(j),NumberOfVertices);
 				helper += 1;
@@ -75,9 +76,10 @@ int main(int argc, char *argv[]) {
 					if(sqrt(pow(vecCellsEta->at(j)-all_track_eta->at(k),2)+pow(vecCellsPhi->at(j)-all_track_phi->at(k),2))<0.4){
 						hist.FillRTrack(all_track_pt->at(k),all_track_eta->at(k));	
 						SumDRPT += all_track_pt->at(k);
+						NumTracksinD +=1;
 					}
 				}
-				hist.FillNestedHistograms(vecCellsPt->at(j),vecCellsEta->at(j),NumberOfVertices,SumDRPT);
+				hist.FillNestedHistograms(vecCellsPt->at(j),vecCellsEta->at(j),NumberOfVertices,SumDRPT,NumTracksinD);
 				
 				
 				for(int k=0;k<vecCellsPt->size();k++){
@@ -106,18 +108,22 @@ int main(int argc, char *argv[]) {
 			
 			if (countPVvec->at(j) ==0 && countSVvec->at(j)==0){
 				double SumDRPT=0;
+				int NumTracksinD=0;
 				hist.FillCluster(vecCellsPt->at(j),vecCellsEta->at(j));
 				hist.FillClusterVert(vecCellsPt->at(j),NumberOfVertices);
 				helper += 1;
 				hist.FillClusternoTrack(vecCellsPt->at(j),vecCellsEta->at(j));
 				
 				for(int k =0;k<all_track_pt->size();k++){
+					
 					if(sqrt(pow(vecCellsEta->at(j)-all_track_eta->at(k),2)+pow(vecCellsPhi->at(j)-all_track_phi->at(k),2))<0.4){
-						hist.FillRTrack(all_track_pt->at(k),all_track_eta->at(k));	
+						hist.FillRTrack(all_track_pt->at(k),all_track_eta->at(k));
+						if (vecCellsEta->at(j)>2.5)cout<<all_track_eta->at(k)<<"\t"<<vecCellsEta->at(j)<<endl;	
 						SumDRPT+=all_track_pt->at(k);
+						NumTracksinD +=1;
 					}
 				}
-				hist.FillNestedHistograms(vecCellsPt->at(j),vecCellsEta->at(j),NumberOfVertices,SumDRPT);
+				hist.FillNestedHistograms(vecCellsPt->at(j),vecCellsEta->at(j),NumberOfVertices,SumDRPT,NumTracksinD);
 				
 				for(int k=0;k<vecCellsPt->size();k++){
 					if(sqrt(pow(vecCellsEta->at(j)-vecCellsEta->at(k),2)+pow(vecCellsPhi->at(j)-vecCellsPhi->at(k),2))<0.4){
