@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
 		
 		
 		//Save ALL Tracks
-		GetAllTracks(m_event,&alltracks,&allprimtracks,&allpiletracks);
+		GetAllTracks(m_event,&alltracks,&allprimtracks,&allpiletracks,vecCaloCells,&noaCprimtracks,&noaCpiletracks);
 		
 		// Store vector in five Branches of MCCtree
 		StoreInTree(m_event, vecCaloCells, vecCellsPt, vecCellsEta, vecCellsPhi, SumPtPVvec, countPVvec, SumPtSVvec, countSVvec, Event_Nr, Run_Nr, averageNumberOfInteractions, mu_pt, mu_eta, mu_phi, mu_IsolationParam_ptcone20, mu_charge, NumberOfVertices, jet_pt, jet_eta, jet_phi, MCCtree,prim_track_pt,prim_track_eta,prim_track_phi,pile_track_pt,pile_track_eta,pile_track_phi,alltracks,all_track_pt,all_track_eta,all_track_phi,allprimtracks,all_prim_track_pt,all_prim_track_eta,all_prim_track_phi,allpiletracks,all_pile_track_pt,all_pile_track_eta,all_pile_track_phi,noaCprimtracks,noaC_prim_track_pt,noaC_prim_track_eta,noaC_prim_track_phi,noaCpiletracks,noaC_pile_track_pt,noaC_pile_track_eta,noaC_pile_track_phi);
