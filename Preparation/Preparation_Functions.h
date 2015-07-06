@@ -21,19 +21,29 @@ bool alrdyasso(std::vector<int> associatednums,int k){
 	return false;
 }
 
+
 //Check if the Track belongs to the primary Vertex
 bool isPrimaryVertexTrack(float track_pt, float track_eta, float track_d0, float track_z0sintheta, int track_PixHits, int track_SCTHits){//#LM what is PixHits,SCTHits
 	// Does the Track belong to the PV?
-	    	if (	(track_pt > 500)
-	        	&&	(fabs(track_eta) < 2.5)
+	    	if ((fabs(track_eta) < 2.5)
 	        	&&	(fabs(track_d0) < 1.5)
 	        	&&	(fabs(track_z0sintheta) < 1.5)
+	        	) {
+	        		return true;
+	        } //end of if
+	        return false;
+	    } //end of isPrimaryVertexTrack
+
+//Check if the Track quality is good enough
+bool isgoodTrack(float track_pt, float track_eta, float track_d0, float track_z0sintheta, int track_PixHits, int track_SCTHits){//#LM what is PixHits,SCTHits
+	// Does the Track belong to the PV?
+	    	if (	(track_pt > 500)
 	        	&&	(track_PixHits >= 1)
 	        	&&  (track_SCTHits >= 6) 		 ) {
 	        		return true;
 	        } //end of if
 	        return false;
-	    } //end of isPrimaryVertexTrack
+	    } 
 
 
 //Simply save ALL Tracks no matter if associated with a Cluster or not 
@@ -50,7 +60,12 @@ void GetAllTracks(EWQuickEvent *event,std::vector<TVector3>* alltracks, std::vec
 			std::vector<TVector3> preassociatedClusters;
 			std::vector<int> preassociatedClusternumbers;
 		tTrack.SetPtEtaPhi(track_pt,event->trk_eta_atCalo2ndLayer->at(i),event->trk_phi_atCalo2ndLayer->at(i));
-		
+		if (isgoodTrack(tTrack.Pt(), 
+						tTrack.Eta(), 
+						event->trk_d0->at(i), 
+						event->trk_z0->at(i) * sin(event->trk_theta_wrtPV->at(i)),
+						event->trk_nPix->at(i),
+						event->trk_SCT->at(i)) == false) continue; 
 		bool isPrim = isPrimaryVertexTrack(tTrack.Pt(), 
 						tTrack.Eta(), 
 						event->trk_d0->at(i), 
@@ -135,7 +150,7 @@ void noaCtracks(EWQuickEvent *event,std::vector<TVector3>* noaCprimtracks,std::v
 
 //Takes a Cell (cluster) and checks for Tracks to be associated with
 // ---> All associated Tracknumbers get saved in associatednums to prevent associating a track multiple times
-void MainzCaloCellLoop(EWQuickEvent *event,TVector3 vecCell, std::vector<TVector3> &primtracks, std::vector<TVector3> &pileuptracks,  double &sumPtPV, double &sumPtSV, int &countPV, int &countSV,std::vector<int> &associatednums) {
+/*void MainzCaloCellLoop(EWQuickEvent *event,TVector3 vecCell, std::vector<TVector3> &primtracks, std::vector<TVector3> &pileuptracks,  double &sumPtPV, double &sumPtSV, int &countPV, int &countSV,std::vector<int> &associatednums) {
 	
 	for (unsigned int k=0; k<event->trk_eta_atCalo2ndLayer->size(); k++) {
 	
@@ -177,7 +192,7 @@ void MainzCaloCellLoop(EWQuickEvent *event,TVector3 vecCell, std::vector<TVector
 	
 	}
 
-}
+}*/
 
 
 
