@@ -52,7 +52,7 @@ double GetMinBiasMean(TFile *fileAI,double pt, double eta, int NumberofVertices)
 	if (NumberofVertices>NumberofVerticesLimits[5]) NumberofVertices = NumberofVerticesLimits[5];
 	if (pt>PTLimits[5]) sortpt =  PTLimits[5];					
 	//cout<<sortpt<<"\t"<<sorteta<<"\t"<<NumberofVertices<<endl;	
-	string  name = "SumPTEta"+to_string(sorteta) +"NV"+ to_string(NumberofVertices) + "PT"+to_string(sortpt);
+	string  name = "SumPTEta"+to_string(static_cast<long long int>(sorteta)) +"NV"+ to_string(static_cast<long long int>(NumberofVertices)) + "PT"+to_string(static_cast<long long int>(sortpt));
 	//cout<<name<<endl;
 	TH1F * h1 = new TH1F("h1","h1 title" , 100, 0, 4);
 	h1 = (TH1F*)fileAI->Get(name.c_str());
