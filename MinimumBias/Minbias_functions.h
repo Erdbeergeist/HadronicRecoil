@@ -14,7 +14,7 @@ std::vector<double> sumtrackpt(vector<double>* prim_track_pt,vector<double>* pil
 	for (int i =0;i<prim_track_pt->size();i++){
 		sumpt+=prim_track_pt->at(i);
 		primpt+=prim_track_pt->at(i);
-		
+		cout<<prim_track_pt->at(i)<<endl;
 	}
 	
 	for (int i=0;i<pile_track_pt->size();i++){
@@ -41,19 +41,19 @@ std::vector<double> vecsumtrackpt(vector<double>* prim_track_pt,vector<double>* 
 	//for (int i=0;i<all_track_pt->size();i++){
 		//sumpt+=all_track_pt->at(i);
 	//}
-	cout<<"1\n";
+	//cout<<"1\n";
 	for (int i =0;i<prim_track_pt->size();i++){
 		vec.SetPtEtaPhi(prim_track_pt->at(i),prim_track_eta->at(i),prim_track_phi->at(i));
 		sum+=vec;
 		prim+=vec;
 	}
-	cout<<"2\n";
+	//cout<<"2\n";
 	for (int i=0;i<pile_track_pt->size();i++){
 		vec.SetPtEtaPhi(pile_track_pt->at(i),pile_track_eta->at(i),pile_track_phi->at(i));
 		sum+=vec;
 		pile+=vec;
 	}
-	cout<<"3\n";
+	//cout<<"3\n";
 	for (int i =0;i<mu_pt->size();i++){
 		vec.SetPtEtaPhi(mu_pt->at(i),mu_eta->at(i),mu_phi->at(i));
 		sum= sum -vec;
