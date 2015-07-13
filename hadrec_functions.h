@@ -68,13 +68,39 @@ TVector3 calcHadronicRecoilPrimVertScaled(vector<double>* vecCellsPt, vector<dou
 		TVector3 vecCell;
 		vecCell.SetPtEtaPhi(vecCellsPt->at(i),vecCellsEta->at(i),vecCellsPhi->at(i));
 		
-			if (NumPrimVert->at(i)>0)	if (vecCell.DeltaR(mu1)>=dR) if (vecCell.DeltaR(mu2)>=dR)	{
-				HadronicRecoil += NumPrimVert->at(i)/(NumPrimVert->at(i)+NumPileUp->at(i))*vecCell; ///making sure not to count muons Count tracks from PVT scaled
+			if (NumPrimVert->at(i)>0){
+				if (vecCell.DeltaR(mu1)>=dR&&vecCell.DeltaR(mu2)>=dR)	{
+				//cout<<"3: "<<(double)NumPrimVert->at(i)/(NumPrimVert->at(i)+NumPileUp->at(i))<<endl;
+				HadronicRecoil += ((double) NumPrimVert->at(i)/(NumPrimVert->at(i)+NumPileUp->at(i)))*vecCell; ///making sure not to count muons Count tracks from PVT scaled
 				continue;
 			}
+		}
 			if (NumPileUp->at(i)==0) if (NumPrimVert->at(i)==0)  if (vecCell.DeltaR(mu1)>=dR) if (vecCell.DeltaR(mu2)>=dR) HadronicRecoil +=vecCell; ///making sure not to count muons Count without association
 	}
 	
+	
+	return HadronicRecoil;
+}
+
+///Based on Stephan Tilchs Function calculateHR_AsPt out of AnalysisFunctions.h
+///Calculate the HadronicRecoil by adding up everything but Muons, that has at least 1 track associated with the PVT, but scaled with transverse Momentum proportion
+TVector3 calcHadronicRecoilPrimVertPtScaled(vector<double>* vecCellsPt, vector<double>* vecCellsEta, vector<double>* vecCellsPhi, TVector3 mu1, TVector3 mu2, vector<int>* NumPrimVert, vector<double>* SumPtPrim, vector<int>* NumPileUp, vector<double>* SumPtPileUp, double dR = 0.1) {
+	
+	TVector3 HadronicRecoil;
+	int ptsize = vecCellsPt->size();
+	for (int i=0; i< ptsize;i++) {
+		TVector3 vecCell;
+		vecCell.SetPtEtaPhi(vecCellsPt->at(i),vecCellsEta->at(i),vecCellsPhi->at(i));
+		
+		
+			if (NumPrimVert->at(i)>0) if (vecCell.DeltaR(mu1)>=dR && vecCell.DeltaR(mu2)>=dR){
+				//cout<<"4: "<<SumPtPrim->at(i)/(SumPtPrim->at(i)+SumPtPileUp->at(i))<<endl;
+				HadronicRecoil += SumPtPrim->at(i)/(SumPtPrim->at(i)+SumPtPileUp->at(i))*vecCell; ///making sure not to count muons Count tracks from PVT, but scale with PT proportion
+				continue;
+			}
+			if (NumPrimVert->at(i)==0) if (NumPileUp->at(i)==0)	if (vecCell.DeltaR(mu1)>=dR && vecCell.DeltaR(mu2)>=dR)	HadronicRecoil +=vecCell; ///making sure not to count muons Count without association
+		
+	}
 	
 	return HadronicRecoil;
 }
@@ -101,28 +127,6 @@ TVector3 calcHadronicRecoilPrimVertScaledImp(vector<double>* vecCellsPt, vector<
 			if (NumPrimVert->at(i)>0)		HadronicRecoil += NumPrimVert->at(i)/(NumPrimVert->at(i)+NumPileUp->at(i))*vecCell; ///making sure not to count muons Count tracks from PVT scaled
 			if (NumPrimVert->at(i)==0 && NumPileUp->at(i)==0)		HadronicRecoil +=noAscale*vecCell; ///making sure not to count muons Count without association
 		}
-	}
-	
-	return HadronicRecoil;
-}
-
-///Based on Stephan Tilchs Function calculateHR_AsPt out of AnalysisFunctions.h
-///Calculate the HadronicRecoil by adding up everything but Muons, that has at least 1 track associated with the PVT, but scaled with transverse Momentum proportion
-TVector3 calcHadronicRecoilPrimVertPtScaled(vector<double>* vecCellsPt, vector<double>* vecCellsEta, vector<double>* vecCellsPhi, TVector3 mu1, TVector3 mu2, vector<int>* NumPrimVert, vector<double>* SumPtPrim, vector<int>* NumPileUp, vector<double>* SumPtPileUp, double dR = 0.1) {
-	
-	TVector3 HadronicRecoil;
-	int ptsize = vecCellsPt->size();
-	for (int i=0; i< ptsize;i++) {
-		TVector3 vecCell;
-		vecCell.SetPtEtaPhi(vecCellsPt->at(i),vecCellsEta->at(i),vecCellsPhi->at(i));
-		
-		
-			if (NumPrimVert->at(i)>0) if (vecCell.DeltaR(mu1)>=dR && vecCell.DeltaR(mu2)>=dR){
-				HadronicRecoil += SumPtPrim->at(i)/(SumPtPrim->at(i)+SumPtPileUp->at(i))*vecCell; ///making sure not to count muons Count tracks from PVT, but scale with PT proportion
-				continue;
-			}
-			if (NumPrimVert->at(i)==0) if (NumPileUp->at(i)==0)	if (vecCell.DeltaR(mu1)>=dR && vecCell.DeltaR(mu2)>=dR)	HadronicRecoil +=vecCell; ///making sure not to count muons Count without association
-		
 	}
 	
 	return HadronicRecoil;
