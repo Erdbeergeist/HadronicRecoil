@@ -8,6 +8,9 @@ class makeHists{
 		void initHists() {
 			
 			///1D Historgrams
+			hadrec_mapHist1D["cleta"] = new TH1F("cleta","",100,-4,4);
+			hadrec_mapHist1D["cln"] = new TH1F("cln","",100,0,1000);
+			hadrec_mapHist1D["clpv"] = new TH1F("clnpv","",80,0,80);
 			hadrec_mapHist1D["U_x"] = new TH1F("Ux","",100,-100,100);
 			hadrec_mapHist1D["U_y"] = new TH1F("Uy","",100,-100,100);
 			hadrec_mapHist1D["U_par"] = new TH1F("Upar","",100,-100,100);
@@ -39,7 +42,10 @@ class makeHists{
 			hadrec_mapHist2D["U_par+ptZ 2"]->Fill(NumberOfVertices,HadronicRecoil.Pt()/1000 * cos(dphi)-Zvec.Pt()/1000);
 			hadrec_mapHist2D["U_par+ptZ _ ptZ 2"]->Fill(Zvec.Pt()/1000,HadronicRecoil.Pt()/1000 * cos(dphi)-Zvec.Pt()/1000);
 		}
-		
+		void FillClEta(double eta){hadrec_mapHist1D["cleta"]->Fill(eta);}
+		void FillClN(int n, int npv){
+			hadrec_mapHist1D["cln"]->Fill(n);
+			hadrec_mapHist1D["clpv"]->Fill(npv);}
 		void Fill2DHistsresc() {
 			int h=0;
 			getscalefac();
@@ -77,10 +83,10 @@ class makeHists{
 						temp->SetBinContent(y,hadrec_mapHist2D[histname]->GetBinContent(x,y));
 						cutter+=hadrec_mapHist2D[histname]->GetBinContent(x,y);
 					}
-					if (abs(cutter)>40){ ///dont try to fit empty Histograms
+					if (abs(cutter)>0){ ///dont try to fit empty Histograms
 						temp->Fit(ygaus,"Q");
 						double mean = ygaus->GetParameter(1);
-						cout<<mean<<endl;
+						//cout<<mean<<endl;
 						res->SetBinContent(x, mean);///Set the bins of the new Histogram
 						res->SetBinError(x, ygaus->GetParError(1));
 												
@@ -119,7 +125,7 @@ class makeHists{
 						temp->SetBinContent(y,hadrec_mapHist2D[histname]->GetBinContent(x,y));
 						cutter+=hadrec_mapHist2D[histname]->GetBinContent(x,y);
 					}
-					if (abs(cutter)>40){ ///dont try to fit empty Histograms
+					if (abs(cutter)>0){ ///dont try to fit empty Histograms
 						temp->Fit(ygaus,"Q");
 						double sigma = ygaus->GetParameter(2);
 						res->SetBinContent(x, sigma);///Set the bins of the new Histogram

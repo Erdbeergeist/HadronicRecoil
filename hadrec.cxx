@@ -85,6 +85,7 @@ int main(int argc, char *argv[]) {
 	/*fileO->cd();
 	fileO->cd("PileUp");
 	makeHists hists6;*/
+	int cl = 0, clpv=0;
 	for (int i=0;i<totalEvents;i++)	{
 		
 		tree->GetEntry(i);
@@ -101,12 +102,16 @@ int main(int argc, char *argv[]) {
 			Zvec.SetPtEtaPhi(recoZ.Pt(),recoZ.Eta(),recoZ.Phi());
 			///Incerase totalZ, calculate the HadronicRecoil and fill the Histograms
 			totalZ++;
-
+			//cout<<Zvec.Pt()<<endl;
+			
 			TVector3 HadronicRecoil = calcHadronicRecoil(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2,0.1);
 			TVector3 HadronicRecoil2 = calcHadronicRecoilPrimVert(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2,countPVvec,countSVvec,0.1);
 			TVector3 HadronicRecoil3 = calcHadronicRecoilPrimVertScaled(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2,countPVvec,countSVvec,0.1);
 			TVector3 HadronicRecoil4 = calcHadronicRecoilPrimVertPtScaled(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2,countPVvec,SumPtPVvec,countSVvec,SumPtSVvec,0.1);
-			
+			clpv = 0;
+			for (int j =0; j<vecCellsPt->size();j++){if(countPVvec->at(j) >0) clpv+=1;}
+			hists.FillClN(vecCellsPt->size(),clpv);
+			for (int j = 0;j<vecCellsPt->size();j++) hists.FillClEta(vecCellsEta->at(j));
 			//TVector3 HadronicRecoil5 = calcHadronicRecoilPrimVertPtScaledImp(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2,countPVvec,SumPtPVvec,countSVvec,SumPtSVvec);
 			//TVector3 HadronicRecoil6 = calcHadronicRecoilPileUp(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2,countPVvec,countSVvec);
 			//TVector3 HadronicRecoil7 = calcHadronicRecoilPrimVertScaledImp(vecCellsPt,vecCellsEta,vecCellsPhi,mu1,mu2,countPVvec,countSVvec);
@@ -191,7 +196,7 @@ int main(int argc, char *argv[]) {
 
 
 
-
+	
 	return 0;
 	
 }	
